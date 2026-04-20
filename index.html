@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Planner">
+<meta name="theme-color" content="#4682b4">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234682b4'/><text y='68' x='50' text-anchor='middle' font-size='55'>✨</text></svg>">
+<title>Nency's Weekly Planner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --steel:#4682b4;--sl:#5a9fd4;--sd:#36648b;--sg:#6aaedb;
+    --bg:#1c2a3a;--card:#243447;--bdr:#2f4562;--tx:#e6edf3;--mu:#94a3b8;--done:#1e3548;
+  }
+  html{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  body{
+    font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);
+    max-width:500px;margin:0 auto;padding:16px 14px;padding-top:env(safe-area-inset-top,16px);
+    padding-bottom:calc(env(safe-area-inset-bottom,0px) + 80px);
+    -webkit-font-smoothing:antialiased;min-height:100%;
+  }
+
+  .hdr{text-align:center;margin-bottom:16px}
+  .hdr h1{font-size:20px;font-weight:800;color:#fff}
+  .hdr h1 span{background:linear-gradient(135deg,var(--sg),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .wk{color:var(--mu);font-size:12px;margin-top:2px}
+
+  /* Score — compact */
+  .sc{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+  .sc-left{flex:1}
+  .sc-n{font-size:36px;font-weight:800;line-height:1;color:#fff}
+  .sc-l{font-size:11px;color:var(--mu);margin-top:1px}
+  .sc-right{flex:2}
+  .br-bg{height:8px;background:var(--bdr);border-radius:4px;overflow:hidden}
+  .br-fl{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--sd),var(--sg));transition:width .5s;width:0%}
+  .stk{margin-top:4px;font-size:10px;color:var(--mu)}
+
+  /* Bottom Nav (mobile style) */
+  .bnav{
+    position:fixed;bottom:0;left:0;right:0;
+    background:#162030;border-top:1px solid var(--bdr);
+    display:flex;padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
+    z-index:100;
+  }
+  .bnav-btn{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+    background:none;border:none;color:var(--mu);font-family:inherit;
+    font-size:10px;font-weight:600;cursor:pointer;padding:4px;transition:all .2s;
+  }
+  .bnav-btn .ico{font-size:20px}
+  .bnav-btn.on{color:var(--sl)}
+  .bnav-btn.on .ico{transform:scale(1.1)}
+
+  /* Day Tabs — horizontal scroll, touch friendly */
+  .tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    min-width:56px;padding:8px 6px;border-radius:10px;text-align:center;cursor:pointer;
+    background:var(--card);border:1.5px solid var(--bdr);transition:all .2s;font-family:inherit;color:var(--mu);
+    flex-shrink:0;
+  }
+  .tab:hover{border-color:#3d5a7a;color:var(--tx)}
+  .tab.on{border-color:var(--sl);background:#2a4460;color:#fff}
+  .tab .dn{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .tab .dd{font-size:18px;font-weight:800;margin-top:1px}
+  .tab .dt{margin-top:2px;font-size:9px;font-weight:600}
+  .tab .dt .ok{color:var(--sg)}
+  .tab.alld{border-color:#3a6a4a}
+  .tab.alld .dt .ok{color:#66bb6a}
+
+  /* Filters — compact */
+  .flt{display:flex;gap:4px;margin-bottom:12px}
+  .fb{background:var(--card);border:1px solid var(--bdr);color:var(--mu);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+  .fb:hover,.fb.on{border-color:var(--sl);color:#fff;background:#2a4460}
+
+  .pnl{display:none}.pnl.show{display:block}
+  .sec{margin-bottom:12px}
+  .sec-t{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--sl);padding:0 4px;margin-bottom:5px}
+
+  /* Task — bigger touch target */
+  .tk{
+    background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:12px 12px;
+    margin-bottom:5px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;
+    transition:all .15s;user-select:none;-webkit-tap-highlight-color:transparent;
+    min-height:48px;
+  }
+  .tk:active{transform:scale(.98);background:#2a4460}
+  .ck{
+    width:28px;height:28px;min-width:28px;border:2.5px solid #3d5a7a;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;
+    transition:all .25s;margin-top:0;
+  }
+  .tk.done .ck{background:linear-gradient(135deg,var(--steel),var(--sg));border-color:transparent;color:#fff;animation:pop .35s cubic-bezier(.4,0,.2,1)}
+  @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+  .tk.done{background:var(--done);border-color:#2a4a5a}
+  .tk.done .tn{text-decoration:line-through;color:var(--mu)}
+  .tk.done .tw{color:#5a7080}
+  .tb{flex:1;min-width:0}
+  .tn{font-size:13px;font-weight:600;line-height:1.35}
+  .tw{font-size:11px;color:var(--mu);margin-top:2px}
+
+  .tg{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:4px;vertical-align:middle;position:relative;top:-1px}
+  .t-zap{background:#3d3a1a;color:#fbbf24}.t-fire{background:#3d1a1a;color:#f87171}
+  .t-mic{background:#1a3050;color:var(--sg)}.t-clk{background:#2d1a3a;color:#d8a0f0}
+  .t-carry{background:#1a3a2a;color:#66bb6a}
+
+  .carry{
+    display:none;align-items:center;gap:6px;width:100%;justify-content:center;
+    background:#1a3a2a;border:1px solid #2d5a3d;color:#66bb6a;
+    padding:10px 14px;border-radius:10px;font-size:12px;font-weight:600;
+    cursor:pointer;font-family:inherit;margin-top:6px;transition:all .2s;
+  }
+  .carry:hover{background:#224a32}
+  .carry.vis{display:flex}
+
+  /* Meeting Prep */
+  .mtg{
+    background:linear-gradient(135deg,#1e3550,#243a50);border:1px solid var(--bdr);
+    border-radius:10px;padding:12px 14px;margin-bottom:5px;border-left:3px solid var(--sl);
+  }
+  .mtg-t{font-size:13px;font-weight:700}
+  .mtg-m{font-size:11px;color:var(--mu);margin-top:2px}
+  .mtg-cl{margin-top:8px;display:flex;flex-direction:column;gap:4px}
+  .mi{
+    display:flex;align-items:center;gap:8px;font-size:12px;
+    padding:8px 10px;background:#1c3040;border-radius:7px;cursor:pointer;
+    transition:all .15s;user-select:none;min-height:40px;
+  }
+  .mi:active{background:#2a4060}
+  .mi .mc{
+    width:20px;height:20px;min-width:20px;border:2px solid #3d5a7a;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:all .2s;
+  }
+  .mi.done .mc{background:var(--sl);border-color:transparent;color:#fff}
+  .mi.done{color:var(--mu);text-decoration:line-through}
+  .md{font-size:10px;font-weight:700;margin-left:auto;white-space:nowrap}
+  .dw{color:#fbbf24}.dok{color:var(--sg)}.dl{color:#f87171}
+
+  /* Brain Dump */
+  .bd{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px;margin-bottom:14px}
+  .bd h2{font-size:14px;font-weight:700;margin-bottom:6px}
+  .bd h2 span{color:var(--sg)}
+  .bd-h{font-size:11px;color:var(--mu);margin-bottom:6px}
+  .bd textarea{
+    width:100%;min-height:120px;background:#1a2a3a;border:1px solid var(--bdr);border-radius:8px;
+    color:var(--tx);padding:10px 12px;font-family:inherit;font-size:14px;resize:vertical;line-height:1.6;
+  }
+  .bd textarea::placeholder{color:#4a6a8a}
+  .bd textarea:focus{outline:none;border-color:var(--sl)}
+  .bd-a{display:flex;gap:6px;margin-top:8px}
+  .bdb{padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;border:none}
+  .bds{background:linear-gradient(135deg,var(--sd),var(--sl));color:#fff}
+  .bds:hover{filter:brightness(1.15)}
+  .bdc{background:transparent;border:1px solid var(--bdr)!important;color:var(--mu)}
+
+  .bd-o{margin-top:10px}
+  .bd-r{
+    background:#1a2a3a;border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;
+    margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .bd-p{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap}
+  .bp1{background:#3d1a1a;color:#f87171}.bp2{background:#3d3a1a;color:#fbbf24}.bp3{background:#1a3050;color:var(--sg)}
+  .bd-x{flex:1;font-size:12px;font-weight:600;min-width:120px}
+  .bd-r select{background:#243447;border:1px solid var(--bdr);color:var(--tx);padding:6px 8px;border-radius:6px;font-size:12px;font-family:inherit}
+  .bd-r select:focus{outline:none;border-color:var(--sl)}
+  .bda{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;background:var(--sd);color:#fff;border:none}
+
+  .rules{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:14px;font-size:12px;line-height:1.8;color:var(--mu)}
+  .rules b{color:var(--tx)}
+
+  /* Celebration */
+  .cel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);z-index:200}
+  .cel.show{display:flex}
+  .cel-b{background:var(--card);border:2px solid var(--sl);border-radius:16px;padding:28px 36px;text-align:center;animation:up .4s cubic-bezier(.4,0,.2,1)}
+  .cel-b .e{font-size:48px}.cel-b h2{font-size:18px;margin-top:6px}.cel-b p{color:var(--mu);font-size:12px;margin-top:3px}
+  @keyframes up{from{transform:scale(.85);opacity:0}}
+
+  .empty{text-align:center;padding:30px;color:var(--mu);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>✨ <span>Nency's Weekly Planner</span></h1>
+  <div class="wk">Apr 20 – 25, 2026</div>
+</div>
+
+<!-- Score — horizontal compact -->
+<div class="sc">
+  <div class="sc-left">
+    <div class="sc-n" id="num">0/0</div>
+    <div class="sc-l" id="lbl">Let's go! 💪</div>
+  </div>
+  <div class="sc-right">
+    <div class="br-bg"><div class="br-fl" id="bar"></div></div>
+    <div class="stk" id="stk">Tap a task →</div>
+  </div>
+</div>
+
+<!-- ═══ TASKS MODE ═══ -->
+<div id="mTasks">
+  <div class="tabs" id="tabs"></div>
+  <div class="flt">
+    <button class="fb on" onclick="fil('all',this)">All</button>
+    <button class="fb" onclick="fil('zap',this)">⚡ Quick</button>
+    <button class="fb" onclick="fil('fire',this)">🔴 Impact</button>
+    <button class="fb" onclick="fil('todo',this)">📋 To Do</button>
+  </div>
+  <div id="panels"></div>
+</div>
+
+<!-- ═══ BRAIN DUMP ═══ -->
+<div id="mBrain" style="display:none">
+  <div class="bd">
+    <h2>🧠 Brain Dump → <span>Tasks</span></h2>
+    <div class="bd-h">One item per line. I'll sort by priority — you pick the day.</div>
+    <textarea id="bdI" placeholder="follow up with Prabhu on Germany
+prep deck for ROB 360
+submit hackathon app
+check IAR May schedule"></textarea>
+    <div class="bd-a">
+      <button class="bdb bds" onclick="sortBD()">✨ Sort</button>
+      <button class="bdb bdc" onclick="clearBD()">Clear</button>
+    </div>
+    <div class="bd-o" id="bdO"></div>
+  </div>
+</div>
+
+<!-- ═══ MEETING PREP ═══ -->
+<div id="mMtg" style="display:none">
+  <div class="sec">
+    <div class="sec-t">🎤 Big Meetings — 48hr prep</div>
+    <div class="mtg">
+      <div class="mtg-t">ROB 360 Pulse: Readiness</div>
+      <div class="mtg-m">📅 Thu 11:05am · PRESENTING · ~50 ppl</div>
+      <div class="mtg-cl">
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Content + talk track</span><span class="md dw">⏰ Tue 11am</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send pre-read</span><span class="md dw">⏰ Wed 11am</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Fri 11am</span></div>
+      </div>
+    </div>
+    <div class="mtg">
+      <div class="mtg-t">RevS AI Acceleration</div>
+      <div class="mtg-m">📅 Tue 12:05pm · Large call · ~60 ppl</div>
+      <div class="mtg-cl">
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Content + talk track</span><span class="md dl">⏰ Past due</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Wed 12pm</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">📅 You're Hosting — 24hr rules</div>
+    <div class="mtg">
+      <div class="mtg-t">Field Activation Weekly</div>
+      <div class="mtg-m">📅 Mon 3:30pm · w/ Coco</div>
+      <div class="mtg-cl">
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Pre-read / agenda</span><span class="md dl">⏰ Was Sun</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Tue 3:30pm</span></div>
+      </div>
+    </div>
+    <div class="mtg">
+      <div class="mtg-t">VS Code Club</div>
+      <div class="mtg-m">📅 Thu 10am · You're hosting!</div>
+      <div class="mtg-cl">
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Pre-read / agenda</span><span class="md dw">⏰ Wed 10am</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Fri 10am</span></div>
+      </div>
+    </div>
+    <div class="mtg">
+      <div class="mtg-t">Svjetlana / Nency Sync</div>
+      <div class="mtg-m">📅 Wed 10:35am</div>
+      <div class="mtg-cl">
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Agenda / talking points</span><span class="md dw">⏰ Tue 10:35am</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Thu 10:35am</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">📋 Your Rules</div>
+    <div class="rules">
+      <b>🎤 Big (10+ ppl):</b> Content ready <b style="color:#fbbf24">48hrs before</b><br>
+      <b>📅 Hosting:</b> Pre-read <b style="color:#fbbf24">24hrs before</b> · Recap <b style="color:var(--sg)">24hrs after</b>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<div class="bnav">
+  <button class="bnav-btn on" id="b1" onclick="showMode('tasks')"><span class="ico">📅</span>Tasks</button>
+  <button class="bnav-btn" id="b2" onclick="showMode('brain')"><span class="ico">🧠</span>Dump</button>
+  <button class="bnav-btn" id="b3" onclick="showMode('mtg')"><span class="ico">🎤</span>Prep</button>
+</div>
+
+<!-- Celebrations -->
+<div class="cel" id="cel" onclick="this.classList.remove('show')"><div class="cel-b"><div class="e" id="cE">🎉</div><h2 id="cT">Done!</h2><p id="cM">Keep going!</p></div></div>
+<div class="cel" id="cyM" onclick="this.classList.remove('show')"><div class="cel-b"><div class="e">📦➡️</div><h2 id="cyT">Moved!</h2><p id="cyP">Carried over</p></div></div>
+
+<script>
+// Register service worker
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+const DAYS=[
+  {k:'mon',n:'Mon',d:'20',l:'Monday'},{k:'tue',n:'Tue',d:'21',l:'Tuesday'},
+  {k:'wed',n:'Wed',d:'22',l:'Wednesday'},{k:'thu',n:'Thu',d:'23',l:'Thursday'},
+  {k:'fri',n:'Fri',d:'24',l:'Friday'},
+];
+const TASKS={
+  mon:[{cat:'⚡ DO FIRST',tasks:[
+    {n:'Complete security training',w:'🔴 Past due — first thing!',t:'zap',tg:'t-fire',tl:'OVERDUE'},
+    {n:'Submit Signals survey',w:'2 minutes',t:'zap',tg:'t-zap',tl:'⚡ 2 MIN'},
+    {n:'Resend Germany with new form',w:'📧 Updated form',t:'zap',tg:'t-zap',tl:'⚡ QUICK'},
+  ]},{cat:'🟢 REV MGMT',tasks:[
+    {n:'Update Auto-Fix tracker',w:'📅 10am refresh',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
+  ]},{cat:'🔵 ROB',tasks:[
+    {n:'Field Activation Sync',w:'📅 3:30pm w/ Coco',t:'',tg:'',tl:''},
+  ]}],
+  tue:[{cat:'🟢 REV MGMT',tasks:[
+    {n:'EMEA council approvals',w:'🌍 Unblocks engineering',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
+    {n:'EMEA Neg Billed Opp Sync',w:'📅 11am w/ Prabhu',t:'',tg:'',tl:''},
+    {n:'Rev Mgmt <> Field Activation',w:'📅 11:30am',t:'',tg:'',tl:''},
+  ]},{cat:'🔵 ROB',tasks:[
+    {n:'Review FY27 IAP deck',w:'📅 1:05pm w/ Carrie',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
+  ]}],
+  wed:[{cat:'🔵 ROB',tasks:[
+    {n:'FY27 IAP kick-off',w:'📅 11am + 8pm',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
+    {n:'Pull IAR May plan',w:'For team prep',t:'',tg:'',tl:''},
+    {n:'Meet CI team (Meelad)',w:'📅 4pm — forecasting',t:'',tg:'',tl:''},
+  ]},{cat:'🟢 REV MGMT',tasks:[
+    {n:'AMS ROB & Rev Mgmt Sync',w:'📅 4:35pm',t:'',tg:'',tl:''},
+  ]}],
+  thu:[{cat:'🔵 ROB',tasks:[
+    {n:'Present ROB 360 Pulse',w:'📅 11:05am — ON STAGE!',t:'fire',tg:'t-mic',tl:'PRESENTING'},
+    {n:'Team Sync pre-work',w:'📋 Due before Sync Week',t:'fire',tg:'t-clk',tl:'DUE FRI'},
+    {n:'Jake <> Nency 1:1',w:'📅 2:30pm',t:'',tg:'',tl:''},
+  ]},{cat:'🟣 AI',tasks:[
+    {n:'Host VS Code Club',w:'📅 10am',t:'',tg:'t-mic',tl:'HOSTING'},
+  ]}],
+  fri:[{cat:'🟣 AI',tasks:[
+    {n:'Hackathon app',w:'💻 Build/polish',t:'fire',tg:'t-clk',tl:'NEXT WEEK'},
+  ]},{cat:'🔵 ROB',tasks:[
+    {n:'Finalize Sync pre-work',w:'📋 Last chance!',t:'fire',tg:'t-fire',tl:'DEADLINE'},
+  ]}],
+};
+
+let aDay='mon';const SK='np-v5-20260420';
+
+function buildTabs(){
+  document.getElementById('tabs').innerHTML=DAYS.map(d=>
+    `<div class="tab" data-d="${d.k}" onclick="sw('${d.k}')">
+      <div class="dn">${d.n}</div><div class="dd">${d.d}</div><div class="dt" id="dot-${d.k}"></div>
+    </div>`).join('');
+}
+function buildPanels(){
+  let h='';
+  DAYS.forEach(d=>{
+    h+=`<div class="pnl" id="p-${d.k}" data-d="${d.k}">`;
+    (TASKS[d.k]||[]).forEach(s=>{
+      h+=`<div class="sec"><div class="sec-t">${s.cat}</div>`;
+      s.tasks.forEach(t=>{
+        const tg=t.tl?` <span class="tg ${t.tg}">${t.tl}</span>`:'';
+        h+=`<div class="tk" onclick="tog(this)" data-t="${t.t}" data-d="${d.k}"><div class="ck">✓</div><div class="tb"><div class="tn">${t.n}${tg}</div><div class="tw">${t.w}</div></div></div>`;
+      });
+      h+=`</div>`;
+    });
+    h+=`<div class="sec" id="cr-${d.k}" style="display:none"><div class="sec-t">📦 Carried Over</div></div>`;
+    const nx=DAYS[DAYS.findIndex(x=>x.k===d.k)+1];
+    if(nx) h+=`<button class="carry" id="cy-${d.k}" onclick="co('${d.k}','${nx.k}')">📦 Move unfinished → ${nx.l}</button>`;
+    h+=`</div>`;
+  });
+  document.getElementById('panels').innerHTML=h;
+}
+
+function showMode(m){
+  document.getElementById('mTasks').style.display=m==='tasks'?'':'none';
+  document.getElementById('mBrain').style.display=m==='brain'?'':'none';
+  document.getElementById('mMtg').style.display=m==='mtg'?'':'none';
+  document.getElementById('b1').classList.toggle('on',m==='tasks');
+  document.getElementById('b2').classList.toggle('on',m==='brain');
+  document.getElementById('b3').classList.toggle('on',m==='mtg');
+}
+function sw(d){
+  aDay=d;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.d===d));
+  document.querySelectorAll('.pnl').forEach(p=>p.classList.toggle('show',p.dataset.d===d));
+  uCy();
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  document.querySelector('.fb').classList.add('on');
+  document.querySelectorAll(`#p-${d} .tk`).forEach(t=>t.style.display='');
+}
+function tog(el){
+  const w=el.classList.contains('done');el.classList.toggle('done');
+  if(!w) celeb();uAll();save();
+}
+function co(f,t){
+  const p=document.getElementById(`p-${f}`),un=[...p.querySelectorAll('.tk:not(.done)')];
+  if(!un.length) return;
+  const tgt=document.getElementById(`cr-${t}`);
+  un.forEach(tk=>{
+    const c=tk.cloneNode(true);const nm=c.querySelector('.tn');
+    if(!nm.innerHTML.includes('t-carry')) nm.innerHTML+=' <span class="tg t-carry">📦</span>';
+    c.classList.remove('done');c.dataset.d=t;c.setAttribute('onclick','tog(this)');
+    tgt.appendChild(c);tk.remove();
+  });
+  tgt.style.display='';
+  document.getElementById('cyT').textContent=`${un.length} task${un.length>1?'s':''} moved!`;
+  document.getElementById('cyP').textContent=`→ ${DAYS.find(d=>d.k===t).l}`;
+  const m=document.getElementById('cyM');m.classList.add('show');
+  setTimeout(()=>m.classList.remove('show'),1800);
+  uAll();save();setTimeout(()=>sw(t),1000);
+}
+function uCy(){
+  DAYS.forEach(d=>{const b=document.getElementById(`cy-${d.k}`);if(!b)return;
+    const un=document.getElementById(`p-${d.k}`).querySelectorAll('.tk:not(.done)').length;
+    b.classList.toggle('vis',un>0&&d.k===aDay);
+  });
+}
+
+const CH=[['🎉','BOOM!','Momentum!'],['⚡','Zap!','💙'],['🚀','Go!','Speed!'],['💪','Yes!','Power!'],['🌟','Star!','Shine!'],['🔥','Fire!','Burn!'],['✨','Magic!','✓'],['💎','Gem!','Win!']];
+function celeb(){
+  const a=document.querySelectorAll('.tk').length,d=document.querySelectorAll('.tk.done').length;
+  let c;if(d===a)c=['🦄','ALL DONE!','🎆'];else if(d===Math.ceil(a/2))c=['🏅','HALF!','GO!'];
+  else c=CH[Math.floor(Math.random()*CH.length)];
+  document.getElementById('cE').textContent=c[0];document.getElementById('cT').textContent=c[1];document.getElementById('cM').textContent=c[2];
+  const el=document.getElementById('cel');el.classList.add('show');setTimeout(()=>el.classList.remove('show'),d===a?2200:900);
+}
+
+function uAll(){
+  const a=document.querySelectorAll('.tk').length,d=document.querySelectorAll('.tk.done').length;
+  document.getElementById('num').textContent=d+'/'+a;
+  document.getElementById('bar').style.width=(a?d/a*100:0)+'%';
+  const p=a?Math.round(d/a*100):0,l=document.getElementById('lbl'),s=document.getElementById('stk');
+  if(!d){l.textContent="Let's go! 💪";s.textContent='Tap a task →'}
+  else if(p<30){l.textContent=p+'%';s.textContent='🔥 Keep going!'}
+  else if(p<60){l.textContent=p+'%';s.textContent='🔥🔥 Building!'}
+  else if(p<100){l.textContent=p+'%';s.textContent='🔥🔥🔥 Almost!'}
+  else{l.textContent='100% 👑';s.textContent='🏆 LEGENDARY!'}
+  DAYS.forEach(d=>{
+    const pn=document.getElementById(`p-${d.k}`);if(!pn)return;
+    const t=pn.querySelectorAll('.tk').length,dn=pn.querySelectorAll('.tk.done').length;
+    const dt=document.getElementById(`dot-${d.k}`),tb=document.querySelector(`.tab[data-d="${d.k}"]`);
+    if(!t){dt.textContent='—';tb.classList.remove('alld')}
+    else if(dn===t){dt.innerHTML='<span class="ok">✓</span>';tb.classList.add('alld')}
+    else{dt.innerHTML=`<span class="ok">${dn}/${t}</span>`;tb.classList.remove('alld')}
+  });uCy();
+}
+
+function fil(f,btn){
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  const pn=document.getElementById(`p-${aDay}`);
+  pn.querySelectorAll('.tk').forEach(t=>{
+    if(f==='all')t.style.display='';
+    else if(f==='zap')t.style.display=t.dataset.t==='zap'?'':'none';
+    else if(f==='fire')t.style.display=(t.dataset.t==='fire'||t.dataset.t==='zap')?'':'none';
+    else if(f==='todo')t.style.display=t.classList.contains('done')?'none':'';
+  });
+  pn.querySelectorAll('.sec').forEach(s=>{
+    const v=[...s.querySelectorAll('.tk')].filter(t=>t.style.display!=='none');
+    if(s.id&&s.id.startsWith('cr-')&&!s.querySelectorAll('.tk').length)s.style.display='none';
+    else s.style.display=v.length?'':'none';
+  });
+}
+
+const PW={hi:['urgent','overdue','blocker','approval','deadline','due','asap','critical','council','prep','present'],
+  lo:['check','think','maybe','explore','look into','consider','optional','nice to have']};
+function sortBD(){
+  const raw=document.getElementById('bdI').value.trim();if(!raw)return;
+  const lines=raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  const sorted=lines.map(l=>{const lw=l.toLowerCase();let p=2;if(PW.hi.some(w=>lw.includes(w)))p=1;else if(PW.lo.some(w=>lw.includes(w)))p=3;return{x:l,p}}).sort((a,b)=>a.p-b.p);
+  document.getElementById('bdO').innerHTML='<div class="sec-t" style="margin:6px 0">📋 SORTED:</div>'+
+    sorted.map((i,j)=>{const c=i.p===1?'bp1':i.p===2?'bp2':'bp3',lb=i.p===1?'🔴 HIGH':i.p===2?'🟡 MED':'🟢 LOW';
+      return`<div class="bd-r" id="br-${j}"><span class="bd-p ${c}">${lb}</span><span class="bd-x">${i.x}</span>
+        <select id="bs-${j}"><option value="">Day?</option>${DAYS.map(d=>`<option value="${d.k}">${d.n}</option>`).join('')}</select>
+        <button class="bda" onclick="addBD(${j})">+</button></div>`;
+    }).join('');
+}
+function addBD(i){
+  const s=document.getElementById(`bs-${i}`),d=s.value;if(!d){s.style.borderColor='#f87171';return}
+  const r=document.getElementById(`br-${i}`),x=r.querySelector('.bd-x').textContent;
+  const cr=document.getElementById(`cr-${d}`),tk=document.createElement('div');
+  tk.className='tk';tk.dataset.t='';tk.dataset.d=d;tk.setAttribute('onclick','tog(this)');
+  tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${x} <span class="tg t-carry">🧠</span></div><div class="tw">From brain dump</div></div>`;
+  cr.appendChild(tk);cr.style.display='';r.style.opacity='.3';r.style.pointerEvents='none';
+  r.querySelector('.bda').textContent='✓';uAll();save();
+}
+function clearBD(){document.getElementById('bdI').value='';document.getElementById('bdO').innerHTML=''}
+
+function save(){
+  const st={};DAYS.forEach(d=>{const pn=document.getElementById(`p-${d.k}`);st[d.k]=[];
+    pn.querySelectorAll('.tk').forEach(t=>st[d.k].push({done:t.classList.contains('done'),h:t.outerHTML}));
+  });localStorage.setItem(SK,JSON.stringify(st));
+}
+function load(){
+  const r=localStorage.getItem(SK);if(!r)return;
+  try{const st=JSON.parse(r);DAYS.forEach(d=>{if(!st[d.k])return;
+    const pn=document.getElementById(`p-${d.k}`),tks=pn.querySelectorAll('.tk'),sv=st[d.k];
+    if(tks.length===sv.length){sv.forEach((s,i)=>{if(s.done&&tks[i])tks[i].classList.add('done')})}
+    else{let i=0;tks.forEach(t=>{if(i<sv.length&&sv[i]&&sv[i].done)t.classList.add('done');i++});
+      const cr=document.getElementById(`cr-${d.k}`);
+      for(let j=tks.length;j<sv.length;j++){if(sv[j]&&sv[j].h){
+        const div=document.createElement('div');div.innerHTML=sv[j].h;const tk=div.firstChild;
+        tk.setAttribute('onclick','tog(this)');if(sv[j].done)tk.classList.add('done');else tk.classList.remove('done');
+        cr.appendChild(tk);cr.style.display='';
+      }}
+    }
+  })}catch(e){}
+}
+
+buildTabs();buildPanels();load();sw('mon');uAll();
+</script>
+</body>
+</html>
