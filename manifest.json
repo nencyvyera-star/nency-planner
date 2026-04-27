@@ -1,17 +1,19 @@
 {
   "name": "Nency's Weekly Planner",
   "short_name": "Planner",
-  "description": "ADHD-friendly weekly planner with daily tabs, brain dump, and meeting prep",
-  "start_url": "/index.html",
+  "description": "ADHD-friendly weekly planner with brain dump, daily tabs, and meeting prep",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#1c2a3a",
+  "background_color": "#f5f7fa",
   "theme_color": "#4682b4",
   "orientation": "portrait",
+  "categories": ["productivity"],
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234682b4'/><text y='68' x='50' text-anchor='middle' font-size='55'>✨</text></svg>",
+      "src": "logo.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]

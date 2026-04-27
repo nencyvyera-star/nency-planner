@@ -6,16 +6,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Planner">
-<meta name="theme-color" content="#4682b4">
+<meta name="theme-color" content="#f5f7fa">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234682b4'/><text y='68' x='50' text-anchor='middle' font-size='55'>✨</text></svg>">
+<link rel="apple-touch-icon" href="logo.png">
 <title>Nency's Weekly Planner</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
-    --steel:#4682b4;--sl:#5a9fd4;--sd:#36648b;--sg:#6aaedb;
-    --bg:#1c2a3a;--card:#243447;--bdr:#2f4562;--tx:#e6edf3;--mu:#94a3b8;--done:#1e3548;
+    --steel:#4682b4;--sl:#5a9fd4;--sd:#36648b;--sg:#3b8cc7;
+    --bg:#f5f7fa;--card:#ffffff;--bdr:#e2e8f0;--tx:#1e293b;--mu:#64748b;--done:#f0fdf4;
   }
   html{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
   body{
@@ -26,14 +26,15 @@
   }
 
   .hdr{text-align:center;margin-bottom:16px}
-  .hdr h1{font-size:20px;font-weight:800;color:#fff}
-  .hdr h1 span{background:linear-gradient(135deg,var(--sg),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hdr-logo{width:80px;height:80px;border-radius:20px;object-fit:cover;margin-bottom:6px;box-shadow:0 2px 12px rgba(70,130,180,.18)}
+  .hdr h1{font-size:20px;font-weight:800;color:var(--tx)}
+  .hdr h1 span{background:linear-gradient(135deg,var(--sd),var(--steel));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
   .wk{color:var(--mu);font-size:12px;margin-top:2px}
 
   /* Score — compact */
-  .sc{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+  .sc{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
   .sc-left{flex:1}
-  .sc-n{font-size:36px;font-weight:800;line-height:1;color:#fff}
+  .sc-n{font-size:36px;font-weight:800;line-height:1;color:var(--tx)}
   .sc-l{font-size:11px;color:var(--mu);margin-top:1px}
   .sc-right{flex:2}
   .br-bg{height:8px;background:var(--bdr);border-radius:4px;overflow:hidden}
@@ -43,7 +44,7 @@
   /* Bottom Nav (mobile style) */
   .bnav{
     position:fixed;bottom:0;left:0;right:0;
-    background:#162030;border-top:1px solid var(--bdr);
+    background:#ffffff;border-top:1px solid var(--bdr);box-shadow:0 -2px 10px rgba(0,0,0,.06);
     display:flex;padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
     z-index:100;
   }
@@ -52,9 +53,10 @@
     background:none;border:none;color:var(--mu);font-family:inherit;
     font-size:10px;font-weight:600;cursor:pointer;padding:4px;transition:all .2s;
   }
-  .bnav-btn .ico{font-size:20px}
+  .bnav-btn .ico{font-size:20px;display:flex;align-items:center;justify-content:center}
+  .bnav-btn .ico img{width:26px;height:26px;object-fit:contain;opacity:.55;transition:all .2s}
   .bnav-btn.on{color:var(--sl)}
-  .bnav-btn.on .ico{transform:scale(1.1)}
+  .bnav-btn.on .ico img{opacity:1;transform:scale(1.1)}
 
   /* Day Tabs — horizontal scroll, touch friendly */
   .tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
@@ -64,19 +66,19 @@
     background:var(--card);border:1.5px solid var(--bdr);transition:all .2s;font-family:inherit;color:var(--mu);
     flex-shrink:0;
   }
-  .tab:hover{border-color:#3d5a7a;color:var(--tx)}
-  .tab.on{border-color:var(--sl);background:#2a4460;color:#fff}
+  .tab:hover{border-color:var(--sl);color:var(--tx)}
+  .tab.on{border-color:var(--sl);background:#e0f2fe;color:var(--sd)}
   .tab .dn{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
   .tab .dd{font-size:18px;font-weight:800;margin-top:1px}
   .tab .dt{margin-top:2px;font-size:9px;font-weight:600}
   .tab .dt .ok{color:var(--sg)}
-  .tab.alld{border-color:#3a6a4a}
-  .tab.alld .dt .ok{color:#66bb6a}
+  .tab.alld{border-color:#86efac}
+  .tab.alld .dt .ok{color:#16a34a}
 
   /* Filters — compact */
   .flt{display:flex;gap:4px;margin-bottom:12px}
   .fb{background:var(--card);border:1px solid var(--bdr);color:var(--mu);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
-  .fb:hover,.fb.on{border-color:var(--sl);color:#fff;background:#2a4460}
+  .fb:hover,.fb.on{border-color:var(--sl);color:var(--sd);background:#e0f2fe}
 
   .pnl{display:none}.pnl.show{display:block}
   .sec{margin-bottom:12px}
@@ -87,40 +89,40 @@
     background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:12px 12px;
     margin-bottom:5px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;
     transition:all .15s;user-select:none;-webkit-tap-highlight-color:transparent;
-    min-height:48px;
+    min-height:48px;box-shadow:0 1px 2px rgba(0,0,0,.04);
   }
-  .tk:active{transform:scale(.98);background:#2a4460}
+  .tk:active{transform:scale(.98);background:#f0f7ff}
   .ck{
-    width:28px;height:28px;min-width:28px;border:2.5px solid #3d5a7a;border-radius:50%;
+    width:28px;height:28px;min-width:28px;border:2.5px solid #cbd5e1;border-radius:50%;
     display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;
     transition:all .25s;margin-top:0;
   }
   .tk.done .ck{background:linear-gradient(135deg,var(--steel),var(--sg));border-color:transparent;color:#fff;animation:pop .35s cubic-bezier(.4,0,.2,1)}
   @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
-  .tk.done{background:var(--done);border-color:#2a4a5a}
+  .tk.done{background:var(--done);border-color:#bbf7d0}
   .tk.done .tn{text-decoration:line-through;color:var(--mu)}
-  .tk.done .tw{color:#5a7080}
+  .tk.done .tw{color:#94a3b8}
   .tb{flex:1;min-width:0}
   .tn{font-size:13px;font-weight:600;line-height:1.35}
   .tw{font-size:11px;color:var(--mu);margin-top:2px}
 
   .tg{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:4px;vertical-align:middle;position:relative;top:-1px}
-  .t-zap{background:#3d3a1a;color:#fbbf24}.t-fire{background:#3d1a1a;color:#f87171}
-  .t-mic{background:#1a3050;color:var(--sg)}.t-clk{background:#2d1a3a;color:#d8a0f0}
-  .t-carry{background:#1a3a2a;color:#66bb6a}
+  .t-zap{background:#fef3c7;color:#b45309}.t-fire{background:#fee2e2;color:#dc2626}
+  .t-mic{background:#dbeafe;color:#2563eb}.t-clk{background:#f3e8ff;color:#7c3aed}
+  .t-carry{background:#dcfce7;color:#16a34a}
 
   .carry{
     display:none;align-items:center;gap:6px;width:100%;justify-content:center;
-    background:#1a3a2a;border:1px solid #2d5a3d;color:#66bb6a;
+    background:#dcfce7;border:1px solid #bbf7d0;color:#16a34a;
     padding:10px 14px;border-radius:10px;font-size:12px;font-weight:600;
     cursor:pointer;font-family:inherit;margin-top:6px;transition:all .2s;
   }
-  .carry:hover{background:#224a32}
+  .carry:hover{background:#d1fae5}
   .carry.vis{display:flex}
 
   /* Meeting Prep */
   .mtg{
-    background:linear-gradient(135deg,#1e3550,#243a50);border:1px solid var(--bdr);
+    background:linear-gradient(135deg,#f0f7ff,#e8f4fd);border:1px solid var(--bdr);
     border-radius:10px;padding:12px 14px;margin-bottom:5px;border-left:3px solid var(--sl);
   }
   .mtg-t{font-size:13px;font-weight:700}
@@ -128,18 +130,18 @@
   .mtg-cl{margin-top:8px;display:flex;flex-direction:column;gap:4px}
   .mi{
     display:flex;align-items:center;gap:8px;font-size:12px;
-    padding:8px 10px;background:#1c3040;border-radius:7px;cursor:pointer;
+    padding:8px 10px;background:#f8fafc;border-radius:7px;cursor:pointer;
     transition:all .15s;user-select:none;min-height:40px;
   }
-  .mi:active{background:#2a4060}
+  .mi:active{background:#e2e8f0}
   .mi .mc{
-    width:20px;height:20px;min-width:20px;border:2px solid #3d5a7a;border-radius:50%;
+    width:20px;height:20px;min-width:20px;border:2px solid #cbd5e1;border-radius:50%;
     display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:all .2s;
   }
   .mi.done .mc{background:var(--sl);border-color:transparent;color:#fff}
   .mi.done{color:var(--mu);text-decoration:line-through}
   .md{font-size:10px;font-weight:700;margin-left:auto;white-space:nowrap}
-  .dw{color:#fbbf24}.dok{color:var(--sg)}.dl{color:#f87171}
+  .dw{color:#b45309}.dok{color:#16a34a}.dl{color:#dc2626}
 
   /* Brain Dump */
   .bd{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px;margin-bottom:14px}
@@ -147,10 +149,10 @@
   .bd h2 span{color:var(--sg)}
   .bd-h{font-size:11px;color:var(--mu);margin-bottom:6px}
   .bd textarea{
-    width:100%;min-height:120px;background:#1a2a3a;border:1px solid var(--bdr);border-radius:8px;
+    width:100%;min-height:120px;background:#f8fafc;border:1px solid var(--bdr);border-radius:8px;
     color:var(--tx);padding:10px 12px;font-family:inherit;font-size:14px;resize:vertical;line-height:1.6;
   }
-  .bd textarea::placeholder{color:#4a6a8a}
+  .bd textarea::placeholder{color:#94a3b8}
   .bd textarea:focus{outline:none;border-color:var(--sl)}
   .bd-a{display:flex;gap:6px;margin-top:8px}
   .bdb{padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;border:none}
@@ -160,13 +162,13 @@
 
   .bd-o{margin-top:10px}
   .bd-r{
-    background:#1a2a3a;border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;
+    background:#f8fafc;border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;
     margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
   }
   .bd-p{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap}
-  .bp1{background:#3d1a1a;color:#f87171}.bp2{background:#3d3a1a;color:#fbbf24}.bp3{background:#1a3050;color:var(--sg)}
+  .bp1{background:#fee2e2;color:#dc2626}.bp2{background:#fef3c7;color:#b45309}.bp3{background:#dbeafe;color:#2563eb}
   .bd-x{flex:1;font-size:12px;font-weight:600;min-width:120px}
-  .bd-r select{background:#243447;border:1px solid var(--bdr);color:var(--tx);padding:6px 8px;border-radius:6px;font-size:12px;font-family:inherit}
+  .bd-r select{background:#f8fafc;border:1px solid var(--bdr);color:var(--tx);padding:6px 8px;border-radius:6px;font-size:12px;font-family:inherit}
   .bd-r select:focus{outline:none;border-color:var(--sl)}
   .bda{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;background:var(--sd);color:#fff;border:none}
 
@@ -174,20 +176,183 @@
   .rules b{color:var(--tx)}
 
   /* Celebration */
-  .cel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);z-index:200}
+  .cel{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.25);z-index:200}
   .cel.show{display:flex}
-  .cel-b{background:var(--card);border:2px solid var(--sl);border-radius:16px;padding:28px 36px;text-align:center;animation:up .4s cubic-bezier(.4,0,.2,1)}
-  .cel-b .e{font-size:48px}.cel-b h2{font-size:18px;margin-top:6px}.cel-b p{color:var(--mu);font-size:12px;margin-top:3px}
+  .cel-b{background:var(--card);border:2px solid var(--sl);border-radius:16px;padding:28px 36px;text-align:center;animation:up .4s cubic-bezier(.4,0,.2,1);box-shadow:0 8px 30px rgba(0,0,0,.12)}
+  .cel-b .e{font-size:48px}.cel-b h2{font-size:18px;margin-top:6px;color:var(--tx)}.cel-b p{color:var(--mu);font-size:12px;margin-top:3px}
   @keyframes up{from{transform:scale(.85);opacity:0}}
 
   .empty{text-align:center;padding:30px;color:var(--mu);font-size:13px}
+
+  /* ═══ FLOATING ACTION BUTTON ═══ */
+  .fab{
+    position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));right:16px;
+    width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;z-index:150;
+    background:linear-gradient(135deg,var(--sd),var(--sg));color:#fff;font-size:26px;
+    box-shadow:0 4px 20px rgba(70,130,180,.5);transition:all .25s;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .fab:active{transform:scale(.9)}
+  .fab:hover{box-shadow:0 6px 28px rgba(70,130,180,.7);transform:scale(1.05)}
+  .fab.open{transform:rotate(45deg);background:linear-gradient(135deg,#f87171,#fbbf24)}
+
+  /* ═══ QUICK DUMP MODAL ═══ */
+  .qd-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:180;
+    display:none;align-items:flex-end;justify-content:center;
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  }
+  .qd-overlay.show{display:flex}
+  .qd{
+    width:100%;max-width:500px;background:var(--bg);border-top:2px solid var(--sl);
+    border-radius:20px 20px 0 0;padding:20px 16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+    animation:slideUp .3s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto;
+  }
+  @keyframes slideUp{from{transform:translateY(100%)}}
+  .qd-handle{width:36px;height:4px;background:var(--bdr);border-radius:2px;margin:0 auto 14px}
+  .qd h2{font-size:16px;font-weight:800;margin-bottom:4px}
+  .qd h2 span{color:var(--sg)}
+  .qd-sub{font-size:11px;color:var(--mu);margin-bottom:10px}
+  .qd textarea{
+    width:100%;min-height:100px;background:#f8fafc;border:1.5px solid var(--bdr);border-radius:10px;
+    color:var(--tx);padding:12px 14px;font-family:inherit;font-size:16px;resize:none;line-height:1.6;
+    -webkit-appearance:none;
+  }
+  .qd textarea::placeholder{color:#94a3b8}
+  .qd textarea:focus{outline:none;border-color:var(--sl)}
+  .qd-actions{display:flex;gap:8px;margin-top:10px}
+  .qd-btn{
+    flex:1;padding:14px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;
+    font-family:inherit;transition:all .2s;border:none;
+  }
+  .qd-sort{background:linear-gradient(135deg,var(--sd),var(--sl));color:#fff}
+  .qd-sort:active{filter:brightness(1.2)}
+  .qd-close{background:transparent;border:1px solid var(--bdr)!important;color:var(--mu)}
+  .qd-results{margin-top:12px}
+
+  /* Quick-dump result items */
+  .qr{
+    background:#f8fafc;border:1px solid var(--bdr);border-radius:10px;padding:10px 12px;
+    margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    transition:all .2s;
+  }
+  .qr.added{opacity:.35;pointer-events:none}
+  .qr.added .qr-add{background:#dcfce7;color:#16a34a}
+  .qr-pri{font-size:9px;font-weight:700;padding:3px 7px;border-radius:5px;white-space:nowrap}
+  .qr-txt{flex:1;font-size:13px;font-weight:600;min-width:100px}
+  .qr-days{display:flex;gap:3px;flex-wrap:wrap}
+  .qr-day{
+    padding:6px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;
+    font-family:inherit;background:var(--card);border:1.5px solid var(--bdr);color:var(--mu);
+    transition:all .15s;
+  }
+  .qr-day:active,.qr-day.picked{border-color:var(--sl);color:var(--sd);background:#e0f2fe}
+  .qr-add{
+    padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;
+    font-family:inherit;background:var(--sd);color:#fff;border:none;transition:all .15s;
+    white-space:nowrap;
+  }
+  .qr-add:active{transform:scale(.95)}
+  .qr-added-label{font-size:11px;color:#16a34a;font-weight:700}
+
+  /* ═══ ME TAB — Grateful + Health ═══ */
+  .me-day-tabs{display:flex;gap:4px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .me-day-tabs::-webkit-scrollbar{display:none}
+  .me-dt{
+    padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;
+    font-family:inherit;background:var(--card);border:1.5px solid var(--bdr);color:var(--mu);
+    transition:all .15s;flex-shrink:0;
+  }
+  .me-dt.on{border-color:var(--sl);background:#e0f2fe;color:var(--sd)}
+
+  /* Grateful Corner */
+  .grat{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .grat-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .grat-hdr h2{font-size:15px;font-weight:800}
+  .grat-hdr h2 span{color:#f59e0b}
+  .grat-sub{font-size:11px;color:var(--mu);margin-bottom:8px}
+  .grat-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+  .grat-item{
+    display:flex;align-items:center;gap:8px;background:#fffbeb;border:1px solid #fde68a;
+    border-radius:8px;padding:8px 12px;font-size:13px;color:#92400e;
+    animation:fadeIn .3s ease;
+  }
+  .grat-item .gi-icon{font-size:16px;flex-shrink:0}
+  .grat-item .gi-text{flex:1}
+  .grat-item .gi-del{
+    background:none;border:none;color:#d97706;font-size:14px;cursor:pointer;padding:2px 6px;
+    opacity:.5;transition:opacity .15s;
+  }
+  .grat-item .gi-del:hover{opacity:1}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}}
+  .grat-input{display:flex;gap:6px}
+  .grat-input input{
+    flex:1;background:#fffbeb;border:1.5px solid #fde68a;border-radius:8px;
+    color:#92400e;padding:10px 12px;font-family:inherit;font-size:14px;
+  }
+  .grat-input input::placeholder{color:#d4a053}
+  .grat-input input:focus{outline:none;border-color:#f59e0b}
+  .grat-input button{
+    padding:10px 16px;border-radius:8px;border:none;background:linear-gradient(135deg,#f59e0b,#fbbf24);
+    color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
+  }
+  .grat-input button:active{transform:scale(.95)}
+  .grat-empty{font-size:12px;color:#d4a053;text-align:center;padding:12px;font-style:italic}
+
+  /* Health Corner */
+  .hlth{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .hlth-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .hlth-hdr h2{font-size:15px;font-weight:800}
+  .hlth-hdr h2 span{color:#16a34a}
+  .hlth-row{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;
+    background:#f8fafc;border:1px solid var(--bdr);border-radius:10px;margin-bottom:6px;
+    transition:all .2s;
+  }
+  .hlth-row.checked{background:#f0fdf4;border-color:#bbf7d0}
+  .hlth-ico{font-size:22px;flex-shrink:0}
+  .hlth-info{flex:1}
+  .hlth-name{font-size:13px;font-weight:700}
+  .hlth-desc{font-size:10px;color:var(--mu);margin-top:1px}
+  .hlth-row.checked .hlth-name{color:#16a34a}
+  .hlth-row.checked .hlth-desc{color:#4ade80}
+
+  /* Water tracker — special */
+  .water-dots{display:flex;gap:4px;margin-top:4px}
+  .wdot{
+    width:24px;height:24px;border-radius:50%;border:2px solid #bae6fd;
+    display:flex;align-items:center;justify-content:center;font-size:11px;
+    cursor:pointer;transition:all .2s;color:transparent;background:#f0f9ff;
+  }
+  .wdot.filled{background:linear-gradient(135deg,#38bdf8,#0ea5e9);border-color:#0ea5e9;color:#fff}
+  .wdot:active{transform:scale(1.2)}
+
+  /* Health check button */
+  .hlth-chk{
+    width:28px;height:28px;min-width:28px;border-radius:50%;border:2.5px solid #cbd5e1;
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;
+    cursor:pointer;transition:all .25s;background:#fff;
+  }
+  .hlth-chk.on{background:linear-gradient(135deg,#22c55e,#4ade80);border-color:transparent;color:#fff;animation:pop .35s cubic-bezier(.4,0,.2,1)}
+
+  /* Me tab summary strip */
+  .me-summary{
+    display:flex;gap:8px;margin-bottom:14px;
+  }
+  .me-stat{
+    flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:10px;
+    padding:10px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  .me-stat .ms-num{font-size:22px;font-weight:800;line-height:1}
+  .me-stat .ms-lbl{font-size:9px;font-weight:600;color:var(--mu);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <h1>✨ <span>Nency's Weekly Planner</span></h1>
-  <div class="wk">Apr 20 – 25, 2026</div>
+  <img src="logo.png" alt="Planner Logo" class="hdr-logo">
+  <h1><span>Nency's Weekly Planner</span></h1>
+  <div class="wk">Apr 27 – May 1, 2026 · 🏙️ Seattle Offsite</div>
 </div>
 
 <!-- Score — horizontal compact -->
@@ -219,10 +384,10 @@
   <div class="bd">
     <h2>🧠 Brain Dump → <span>Tasks</span></h2>
     <div class="bd-h">One item per line. I'll sort by priority — you pick the day.</div>
-    <textarea id="bdI" placeholder="follow up with Prabhu on Germany
-prep deck for ROB 360
-submit hackathon app
-check IAR May schedule"></textarea>
+    <textarea id="bdI" placeholder="draft CI workshop agenda
+follow up with finance on metrics
+check hackathon submission rules
+review Auto-Fix rule changes"></textarea>
     <div class="bd-a">
       <button class="bdb bds" onclick="sortBD()">✨ Sort</button>
       <button class="bdb bdc" onclick="clearBD()">Clear</button>
@@ -231,69 +396,142 @@ check IAR May schedule"></textarea>
   </div>
 </div>
 
+<!-- ═══ ME (Grateful + Health) ═══ -->
+<div id="mMe" style="display:none">
+  <!-- Day selector -->
+  <div class="me-day-tabs" id="meDays"></div>
+
+  <!-- Summary strip -->
+  <div class="me-summary">
+    <div class="me-stat"><div class="ms-num" id="meGratCt">0</div><div class="ms-lbl">Grateful</div></div>
+    <div class="me-stat"><div class="ms-num" id="meWaterCt">0/8</div><div class="ms-lbl">Water</div></div>
+    <div class="me-stat"><div class="ms-num" id="meHealthCt">0/3</div><div class="ms-lbl">Self-care</div></div>
+  </div>
+
+  <!-- Grateful Corner -->
+  <div class="grat">
+    <div class="grat-hdr"><h2>🙏 Grateful <span>Corner</span></h2></div>
+    <div class="grat-sub">What made you smile today?</div>
+    <div class="grat-list" id="gratList"></div>
+    <div class="grat-empty" id="gratEmpty">Nothing yet — add your first one! ☀️</div>
+    <div class="grat-input">
+      <input type="text" id="gratInput" placeholder="I'm thankful for..." maxlength="120"
+        onkeydown="if(event.key==='Enter')addGrat()">
+      <button onclick="addGrat()">+</button>
+    </div>
+  </div>
+
+  <!-- Health Corner -->
+  <div class="hlth">
+    <div class="hlth-hdr"><h2>💚 Health <span>Check</span></h2></div>
+
+    <!-- Water -->
+    <div class="hlth-row" id="hWater">
+      <div class="hlth-ico">💧</div>
+      <div class="hlth-info">
+        <div class="hlth-name">Water</div>
+        <div class="hlth-desc">Tap each glass as you drink</div>
+        <div class="water-dots" id="waterDots"></div>
+      </div>
+    </div>
+
+    <!-- Stretching -->
+    <div class="hlth-row" id="hStretch" onclick="toggleHealth('stretch')">
+      <div class="hlth-ico">🧘</div>
+      <div class="hlth-info">
+        <div class="hlth-name">Stretched today</div>
+        <div class="hlth-desc">Even 2 minutes counts!</div>
+      </div>
+      <div class="hlth-chk" id="chkStretch">✓</div>
+    </div>
+
+    <!-- Eating -->
+    <div class="hlth-row" id="hEat" onclick="toggleHealth('eat')">
+      <div class="hlth-ico">🍎</div>
+      <div class="hlth-info">
+        <div class="hlth-name">Ate a real meal</div>
+        <div class="hlth-desc">Not just coffee & snacks!</div>
+      </div>
+      <div class="hlth-chk" id="chkEat">✓</div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ MEETING PREP ═══ -->
 <div id="mMtg" style="display:none">
   <div class="sec">
-    <div class="sec-t">🎤 Big Meetings — 48hr prep</div>
+    <div class="sec-t">�️ Offsite — Seattle Team Week</div>
     <div class="mtg">
-      <div class="mtg-t">ROB 360 Pulse: Readiness</div>
-      <div class="mtg-m">📅 Thu 11:05am · PRESENTING · ~50 ppl</div>
+      <div class="mtg-t">Team Offsite — All Week</div>
+      <div class="mtg-m">📅 Mon–Fri · Seattle · Full team 🎯</div>
       <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Content + talk track</span><span class="md dw">⏰ Tue 11am</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send pre-read</span><span class="md dw">⏰ Wed 11am</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Fri 11am</span></div>
-      </div>
-    </div>
-    <div class="mtg">
-      <div class="mtg-t">RevS AI Acceleration</div>
-      <div class="mtg-m">📅 Tue 12:05pm · Large call · ~60 ppl</div>
-      <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Content + talk track</span><span class="md dl">⏰ Past due</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Wed 12pm</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Travel + settle in</span><span class="md dok">Mon AM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Block early AM for urgent sends</span><span class="md dw">⏰ Daily</span></div>
       </div>
     </div>
   </div>
   <div class="sec">
-    <div class="sec-t">📅 You're Hosting — 24hr rules</div>
+    <div class="sec-t">🔴 Must-Send Comms This Week</div>
     <div class="mtg">
-      <div class="mtg-t">Field Activation Weekly</div>
-      <div class="mtg-m">📅 Mon 3:30pm · w/ Coco</div>
+      <div class="mtg-t">Auto-Fix Brief → Division SELs</div>
+      <div class="mtg-m">📧 Due Mon AM · Adoption update + enablement day pushed</div>
       <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Pre-read / agenda</span><span class="md dl">⏰ Was Sun</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Tue 3:30pm</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Draft brief with adoption data per division</span><span class="md dl">⏰ Sun night</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Add: global enablement day → next week (rule changes)</span><span class="md dl">⏰ Sun night</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send to all division SELs</span><span class="md dl">⏰ Mon 9am</span></div>
       </div>
     </div>
     <div class="mtg">
-      <div class="mtg-t">VS Code Club</div>
-      <div class="mtg-m">📅 Thu 10am · You're hosting!</div>
+      <div class="mtg-t">ROB Comms — CI Workshops</div>
+      <div class="mtg-m">📧 Tue · May/June workshop dates + awareness</div>
       <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Pre-read / agenda</span><span class="md dw">⏰ Wed 10am</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Fri 10am</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Draft CI workshop dates + agenda comms</span><span class="md dw">⏰ Tue AM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send teaser + full schedule</span><span class="md dw">⏰ Tue PM</span></div>
       </div>
     </div>
     <div class="mtg">
-      <div class="mtg-t">Svjetlana / Nency Sync</div>
-      <div class="mtg-m">📅 Wed 10:35am</div>
+      <div class="mtg-t">VS Code Vibes — Invites + Comms</div>
+      <div class="mtg-m">📧 Thu · Target event date 5/8</div>
       <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Agenda / talking points</span><span class="md dw">⏰ Tue 10:35am</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send recap</span><span class="md dok">⏰ Thu 10:35am</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Finalize content</span><span class="md dw">⏰ Wed</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send invites + comms</span><span class="md dw">⏰ Thu</span></div>
       </div>
     </div>
   </div>
   <div class="sec">
-    <div class="sec-t">📋 Your Rules</div>
+    <div class="sec-t">📋 Offsite Week Rules</div>
     <div class="rules">
-      <b>🎤 Big (10+ ppl):</b> Content ready <b style="color:#fbbf24">48hrs before</b><br>
-      <b>📅 Hosting:</b> Pre-read <b style="color:#fbbf24">24hrs before</b> · Recap <b style="color:var(--sg)">24hrs after</b>
+      <b>🏙️ Offsite:</b> Sessions run all day — <b style="color:#fbbf24">real work = early AM + evenings</b><br>
+      <b>🔴 Tomorrow:</b> Auto-Fix Brief MUST go out <b style="color:#f87171">Monday morning</b><br>
+      <b>📧 Comms week:</b> 3 major sends — SEL brief, CI workshops, VS Code Vibes
     </div>
   </div>
 </div>
 
 <!-- Bottom Nav -->
 <div class="bnav">
-  <button class="bnav-btn on" id="b1" onclick="showMode('tasks')"><span class="ico">📅</span>Tasks</button>
-  <button class="bnav-btn" id="b2" onclick="showMode('brain')"><span class="ico">🧠</span>Dump</button>
-  <button class="bnav-btn" id="b3" onclick="showMode('mtg')"><span class="ico">🎤</span>Prep</button>
+  <button class="bnav-btn on" id="b1" onclick="showMode('tasks')"><span class="ico"><img src="icon-tasks.png" alt="Tasks"></span>Tasks</button>
+  <button class="bnav-btn" id="b2" onclick="showMode('brain')"><span class="ico"><img src="icon-dump.png" alt="Dump"></span>Dump</button>
+  <button class="bnav-btn" id="b4" onclick="showMode('me')"><span class="ico"><img src="icon-me.png" alt="Me"></span>Me</button>
+  <button class="bnav-btn" id="b3" onclick="showMode('mtg')"><span class="ico"><img src="icon-prep.png" alt="Prep"></span>Prep</button>
+</div>
+
+<!-- ═══ FLOATING BRAIN DUMP BUTTON ═══ -->
+<button class="fab" id="fab" onclick="toggleQD()" aria-label="Quick brain dump">🧠</button>
+
+<!-- ═══ QUICK DUMP MODAL ═══ -->
+<div class="qd-overlay" id="qdOverlay" onclick="if(event.target===this)closeQD()">
+  <div class="qd">
+    <div class="qd-handle"></div>
+    <h2>🧠 Quick <span>Dump</span></h2>
+    <div class="qd-sub">One thought per line — I'll sort by priority ✨</div>
+    <textarea id="qdInput" placeholder="what's on your mind?&#10;one item per line..." rows="4"></textarea>
+    <div class="qd-actions">
+      <button class="qd-btn qd-sort" onclick="quickSort()">✨ Sort & Assign</button>
+      <button class="qd-btn qd-close" onclick="closeQD()">Done</button>
+    </div>
+    <div class="qd-results" id="qdResults"></div>
+  </div>
 </div>
 
 <!-- Celebrations -->
@@ -305,49 +543,53 @@ check IAR May schedule"></textarea>
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 
 const DAYS=[
-  {k:'mon',n:'Mon',d:'20',l:'Monday'},{k:'tue',n:'Tue',d:'21',l:'Tuesday'},
-  {k:'wed',n:'Wed',d:'22',l:'Wednesday'},{k:'thu',n:'Thu',d:'23',l:'Thursday'},
-  {k:'fri',n:'Fri',d:'24',l:'Friday'},
+  {k:'mon',n:'Mon',d:'27',l:'Monday'},{k:'tue',n:'Tue',d:'28',l:'Tuesday'},
+  {k:'wed',n:'Wed',d:'29',l:'Wednesday'},{k:'thu',n:'Thu',d:'30',l:'Thursday'},
+  {k:'fri',n:'Fri',d:'1',l:'Friday'},
 ];
 const TASKS={
-  mon:[{cat:'⚡ DO FIRST',tasks:[
-    {n:'Complete security training',w:'🔴 Past due — first thing!',t:'zap',tg:'t-fire',tl:'OVERDUE'},
-    {n:'Submit Signals survey',w:'2 minutes',t:'zap',tg:'t-zap',tl:'⚡ 2 MIN'},
-    {n:'Resend Germany with new form',w:'📧 Updated form',t:'zap',tg:'t-zap',tl:'⚡ QUICK'},
-  ]},{cat:'🟢 REV MGMT',tasks:[
-    {n:'Update Auto-Fix tracker',w:'📅 10am refresh',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
+  mon:[{cat:'🔴 SEND BEFORE 9AM',tasks:[
+    {n:'Auto-Fix Brief → Division SELs',w:'Adoption update + global enablement pushed to next week',t:'fire',tg:'t-fire',tl:'DUE NOW'},
+  ]},{cat:'🟣 HACKATHON',tasks:[
+    {n:'Finish team repo setup',w:'You\'re the lead! Follow team directions',t:'fire',tg:'t-fire',tl:'LEAD'},
+    {n:'Verify hackathon readiness checklist',w:'Confirm team has everything they need',t:'zap',tg:'t-zap',tl:'⚡ CHECK'},
+  ]},{cat:'🏙️ OFFSITE',tasks:[
+    {n:'Offsite Day 1 sessions',w:'Seattle team offsite',t:'',tg:'t-mic',tl:'OFFSITE'},
+  ]}],
+  tue:[{cat:'🔵 AUTO-FIX',tasks:[
+    {n:'Deploy revamped Auto-Fix site',w:'Better visuals, cleaner design — push live',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
   ]},{cat:'🔵 ROB',tasks:[
-    {n:'Field Activation Sync',w:'📅 3:30pm w/ Coco',t:'',tg:'',tl:''},
+    {n:'Send CI workshop comms + dates',w:'May/June Continuous Improvement workshops',t:'fire',tg:'t-clk',tl:'COMMS'},
+    {n:'Quick teaser: CI workshops coming',w:'Short email to build awareness',t:'zap',tg:'t-zap',tl:'⚡ QUICK'},
+  ]},{cat:'🏙️ OFFSITE',tasks:[
+    {n:'Offsite Day 2 sessions',w:'Seattle team offsite',t:'',tg:'t-mic',tl:'OFFSITE'},
   ]}],
-  tue:[{cat:'🟢 REV MGMT',tasks:[
-    {n:'EMEA council approvals',w:'🌍 Unblocks engineering',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
-    {n:'EMEA Neg Billed Opp Sync',w:'📅 11am w/ Prabhu',t:'',tg:'',tl:''},
-    {n:'Rev Mgmt <> Field Activation',w:'📅 11:30am',t:'',tg:'',tl:''},
+  wed:[{cat:'🔵 AUTO-FIX',tasks:[
+    {n:'Build fresh enablement materials',w:'Before global enablement day next week',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
+    {n:'Include rule enhancements from feedback',w:'New rules driving the date push',t:'',tg:'',tl:''},
   ]},{cat:'🔵 ROB',tasks:[
-    {n:'Review FY27 IAP deck',w:'📅 1:05pm w/ Carrie',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
+    {n:'Update IAR Hub — May topics',w:'Add May IAR agenda items',t:'fire',tg:'t-clk',tl:'THIS WEEK'},
+  ]},{cat:'🏙️ OFFSITE',tasks:[
+    {n:'Offsite Day 3 sessions',w:'Seattle team offsite',t:'',tg:'t-mic',tl:'OFFSITE'},
   ]}],
-  wed:[{cat:'🔵 ROB',tasks:[
-    {n:'FY27 IAP kick-off',w:'📅 11am + 8pm',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
-    {n:'Pull IAR May plan',w:'For team prep',t:'',tg:'',tl:''},
-    {n:'Meet CI team (Meelad)',w:'📅 4pm — forecasting',t:'',tg:'',tl:''},
-  ]},{cat:'🟢 REV MGMT',tasks:[
-    {n:'AMS ROB & Rev Mgmt Sync',w:'📅 4:35pm',t:'',tg:'',tl:''},
+  thu:[{cat:'🟣 VS CODE',tasks:[
+    {n:'Finish Catching VS Code Vibes',w:'Content + polish — target launch 5/8',t:'fire',tg:'t-clk',tl:'DUE 5/8'},
+    {n:'Send VS Code Vibes invites + comms',w:'Get it on calendars!',t:'fire',tg:'t-fire',tl:'COMMS'},
+  ]},{cat:'🔵 AUTO-FIX',tasks:[
+    {n:'Finalize enablement before global day',w:'Last pass on materials',t:'',tg:'t-clk',tl:'DEADLINE'},
+  ]},{cat:'🏙️ OFFSITE',tasks:[
+    {n:'Offsite Day 4 sessions',w:'Seattle team offsite',t:'',tg:'t-mic',tl:'OFFSITE'},
   ]}],
-  thu:[{cat:'🔵 ROB',tasks:[
-    {n:'Present ROB 360 Pulse',w:'📅 11:05am — ON STAGE!',t:'fire',tg:'t-mic',tl:'PRESENTING'},
-    {n:'Team Sync pre-work',w:'📋 Due before Sync Week',t:'fire',tg:'t-clk',tl:'DUE FRI'},
-    {n:'Jake <> Nency 1:1',w:'📅 2:30pm',t:'',tg:'',tl:''},
-  ]},{cat:'🟣 AI',tasks:[
-    {n:'Host VS Code Club',w:'📅 10am',t:'',tg:'t-mic',tl:'HOSTING'},
-  ]}],
-  fri:[{cat:'🟣 AI',tasks:[
-    {n:'Hackathon app',w:'💻 Build/polish',t:'fire',tg:'t-clk',tl:'NEXT WEEK'},
-  ]},{cat:'🔵 ROB',tasks:[
-    {n:'Finalize Sync pre-work',w:'📋 Last chance!',t:'fire',tg:'t-fire',tl:'DEADLINE'},
+  fri:[{cat:'🟢 STRATEGIC PLANNING',tasks:[
+    {n:'FY27 ROB planning kickoff',w:'Create system + framework for FY27',t:'fire',tg:'t-fire',tl:'STRATEGIC'},
+    {n:'Design repeatable enablement system',w:'VS Code-based — reuse for every new field landing',t:'fire',tg:'t-clk',tl:'NEW IDEA'},
+    {n:'Metric enablement concept w/ Finance',w:'Partnership — try something new via VS Code',t:'',tg:'',tl:''},
+  ]},{cat:'🏙️ OFFSITE',tasks:[
+    {n:'Offsite Day 5 — wrap up',w:'Seattle team offsite — last day!',t:'',tg:'t-mic',tl:'OFFSITE'},
   ]}],
 };
 
-let aDay='mon';const SK='np-v5-20260420';
+let aDay='mon';const SK='np-v5-20260427';
 
 function buildTabs(){
   document.getElementById('tabs').innerHTML=DAYS.map(d=>
@@ -378,10 +620,13 @@ function buildPanels(){
 function showMode(m){
   document.getElementById('mTasks').style.display=m==='tasks'?'':'none';
   document.getElementById('mBrain').style.display=m==='brain'?'':'none';
+  document.getElementById('mMe').style.display=m==='me'?'':'none';
   document.getElementById('mMtg').style.display=m==='mtg'?'':'none';
   document.getElementById('b1').classList.toggle('on',m==='tasks');
   document.getElementById('b2').classList.toggle('on',m==='brain');
+  document.getElementById('b4').classList.toggle('on',m==='me');
   document.getElementById('b3').classList.toggle('on',m==='mtg');
+  if(m==='me'){buildMeTab();loadMe()}
 }
 function sw(d){
   aDay=d;
@@ -511,6 +756,191 @@ function load(){
 }
 
 buildTabs();buildPanels();load();sw('mon');uAll();
+
+// ═══ QUICK DUMP (FAB) ═══
+function toggleQD(){
+  const o=document.getElementById('qdOverlay');
+  const fab=document.getElementById('fab');
+  if(o.classList.contains('show')){closeQD()}
+  else{
+    o.classList.add('show');fab.classList.add('open');fab.textContent='+';
+    setTimeout(()=>{
+      const inp=document.getElementById('qdInput');
+      inp.focus();
+      // Scroll modal into view on mobile
+      inp.scrollIntoView({behavior:'smooth',block:'center'});
+    },350);
+  }
+}
+function closeQD(){
+  document.getElementById('qdOverlay').classList.remove('show');
+  const fab=document.getElementById('fab');
+  fab.classList.remove('open');fab.textContent='🧠';
+}
+
+function quickSort(){
+  const raw=document.getElementById('qdInput').value.trim();
+  if(!raw)return;
+  const lines=raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  const sorted=lines.map(l=>{
+    const lw=l.toLowerCase();let p=2;
+    if(PW.hi.some(w=>lw.includes(w)))p=1;
+    else if(PW.lo.some(w=>lw.includes(w)))p=3;
+    return{x:l,p};
+  }).sort((a,b)=>a.p-b.p);
+
+  const dayBtns=DAYS.map(d=>`<button class="qr-day" data-dk="${d.k}" onclick="pickDay(this)">${d.n}</button>`).join('');
+
+  document.getElementById('qdResults').innerHTML=sorted.map((item,i)=>{
+    const cls=item.p===1?'bp1':item.p===2?'bp2':'bp3';
+    const lbl=item.p===1?'🔴 HIGH':item.p===2?'🟡 MED':'🟢 LOW';
+    return `<div class="qr" id="qr-${i}">
+      <span class="qr-pri ${cls}">${lbl}</span>
+      <span class="qr-txt">${item.x}</span>
+      <div class="qr-days">${dayBtns}</div>
+      <button class="qr-add" onclick="quickAdd(${i})">+ Add</button>
+    </div>`;
+  }).join('');
+}
+
+function pickDay(btn){
+  // Deselect siblings, select this one
+  btn.parentElement.querySelectorAll('.qr-day').forEach(b=>b.classList.remove('picked'));
+  btn.classList.add('picked');
+}
+
+function quickAdd(i){
+  const row=document.getElementById(`qr-${i}`);
+  const picked=row.querySelector('.qr-day.picked');
+  if(!picked){
+    // Flash the day buttons to hint
+    row.querySelectorAll('.qr-day').forEach(b=>{b.style.borderColor='#f87171';setTimeout(()=>b.style.borderColor='',800)});
+    return;
+  }
+  const day=picked.dataset.dk;
+  const text=row.querySelector('.qr-txt').textContent;
+
+  // Add task to the carried-over section of that day
+  const cr=document.getElementById(`cr-${day}`);
+  const tk=document.createElement('div');
+  tk.className='tk';tk.dataset.t='';tk.dataset.d=day;
+  tk.setAttribute('onclick','tog(this)');
+  tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${text} <span class="tg t-carry">🧠</span></div><div class="tw">From quick dump</div></div>`;
+  cr.appendChild(tk);cr.style.display='';
+
+  // Mark as added
+  row.classList.add('added');
+  row.querySelector('.qr-add').textContent='✓ Added';
+  uAll();save();
+
+  // Mini celebration
+  const fab=document.getElementById('fab');
+  fab.style.transform='scale(1.3)';setTimeout(()=>fab.style.transform='',200);
+}
+
+// ═══ ME TAB — Grateful + Health ═══
+const MK='np-me-20260427';
+let meDay='mon';
+
+function buildMeTab(){
+  // Day tabs for Me section
+  document.getElementById('meDays').innerHTML=DAYS.map(d=>
+    `<button class="me-dt${d.k===meDay?' on':''}" data-dk="${d.k}" onclick="switchMeDay('${d.k}')">${d.n} ${d.d}</button>`
+  ).join('');
+  // Water dots
+  let dots='';
+  for(let i=0;i<8;i++) dots+=`<div class="wdot" data-i="${i}" onclick="tapWater(${i})">💧</div>`;
+  document.getElementById('waterDots').innerHTML=dots;
+}
+
+function switchMeDay(dk){
+  meDay=dk;
+  document.querySelectorAll('.me-dt').forEach(b=>b.classList.toggle('on',b.dataset.dk===dk));
+  loadMe();
+}
+
+function getMeData(){
+  try{return JSON.parse(localStorage.getItem(MK))||{}}catch(e){return{}}
+}
+function saveMeData(d){localStorage.setItem(MK,JSON.stringify(d))}
+
+function getDayData(){
+  const all=getMeData();
+  if(!all[meDay]) all[meDay]={grat:[],water:0,stretch:false,eat:false};
+  return all;
+}
+
+// ── Gratitude ──
+function addGrat(){
+  const inp=document.getElementById('gratInput');
+  const txt=inp.value.trim();if(!txt)return;
+  const all=getDayData();
+  all[meDay].grat.push(txt);
+  saveMeData(all);inp.value='';
+  renderGrat(all[meDay].grat);updateMeSummary(all[meDay]);
+}
+function delGrat(i){
+  const all=getDayData();
+  all[meDay].grat.splice(i,1);
+  saveMeData(all);
+  renderGrat(all[meDay].grat);updateMeSummary(all[meDay]);
+}
+function renderGrat(list){
+  const el=document.getElementById('gratList');
+  const em=document.getElementById('gratEmpty');
+  if(!list.length){el.innerHTML='';em.style.display='';return}
+  em.style.display='none';
+  const icons=['☀️','🌸','💛','🌈','⭐','🦋','🍀','💫','🎶','🌻'];
+  el.innerHTML=list.map((g,i)=>
+    `<div class="grat-item"><span class="gi-icon">${icons[i%icons.length]}</span><span class="gi-text">${g}</span><button class="gi-del" onclick="event.stopPropagation();delGrat(${i})">✕</button></div>`
+  ).join('');
+}
+
+// ── Water ──
+function tapWater(i){
+  const all=getDayData();
+  // If tapping the current fill level, unfill it; otherwise fill up to i
+  all[meDay].water = all[meDay].water===(i+1) ? i : i+1;
+  saveMeData(all);
+  renderWater(all[meDay].water);updateMeSummary(all[meDay]);
+}
+function renderWater(n){
+  document.querySelectorAll('.wdot').forEach((d,i)=>d.classList.toggle('filled',i<n));
+  const row=document.getElementById('hWater');
+  row.classList.toggle('checked',n>=8);
+}
+
+// ── Health checks ──
+function toggleHealth(type){
+  const all=getDayData();
+  all[meDay][type]=!all[meDay][type];
+  saveMeData(all);
+  renderHealth(all[meDay]);updateMeSummary(all[meDay]);
+}
+function renderHealth(d){
+  const sc=document.getElementById('chkStretch');
+  sc.classList.toggle('on',!!d.stretch);
+  document.getElementById('hStretch').classList.toggle('checked',!!d.stretch);
+  const ec=document.getElementById('chkEat');
+  ec.classList.toggle('on',!!d.eat);
+  document.getElementById('hEat').classList.toggle('checked',!!d.eat);
+}
+
+function updateMeSummary(d){
+  document.getElementById('meGratCt').textContent=d.grat.length;
+  document.getElementById('meWaterCt').textContent=d.water+'/8';
+  const hc=(d.water>=8?1:0)+(d.stretch?1:0)+(d.eat?1:0);
+  document.getElementById('meHealthCt').textContent=hc+'/3';
+}
+
+function loadMe(){
+  const all=getDayData();
+  const d=all[meDay];
+  renderGrat(d.grat);
+  renderWater(d.water);
+  renderHealth(d);
+  updateMeSummary(d);
+}
 </script>
 </body>
 </html>
