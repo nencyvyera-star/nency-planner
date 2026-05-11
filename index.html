@@ -345,6 +345,118 @@
   }
   .me-stat .ms-num{font-size:22px;font-weight:800;line-height:1}
   .me-stat .ms-lbl{font-size:9px;font-weight:600;color:var(--mu);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+
+  /* ═══ WINS TAB ═══ */
+  .wins-hdr{text-align:center;margin-bottom:16px}
+  .wins-hdr h2{font-size:20px;font-weight:800}
+  .wins-hdr h2 span{background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .wins-sub{font-size:12px;color:var(--mu);margin-top:2px}
+  .wins-count{display:flex;gap:8px;margin-bottom:14px}
+  .wc-stat{flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:10px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .wc-stat .wc-num{font-size:22px;font-weight:800;line-height:1}
+  .wc-stat .wc-lbl{font-size:9px;font-weight:600;color:var(--mu);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+  .win-input{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .win-input h3{font-size:14px;font-weight:700;margin-bottom:8px}
+  .win-input input{width:100%;background:#fffbeb;border:1.5px solid #fde68a;border-radius:8px;color:#92400e;padding:10px 12px;font-family:inherit;font-size:14px;margin-bottom:8px}
+  .win-input input::placeholder{color:#d4a053}
+  .win-input input:focus{outline:none;border-color:#f59e0b}
+  .win-cats{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+  .win-cat{padding:6px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;background:var(--card);border:1.5px solid var(--bdr);color:var(--mu);transition:all .15s}
+  .win-cat.on{border-color:#f59e0b;color:#b45309;background:#fffbeb}
+  .win-cat:active{transform:scale(.95)}
+  .win-add-btn{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+  .win-add-btn:active{transform:scale(.97)}
+  .win-month{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--sl);padding:0 4px;margin-bottom:8px;margin-top:16px}
+  .win-item{background:var(--card);border:1px solid #fde68a;border-left:3px solid #f59e0b;border-radius:10px;padding:12px 14px;margin-bottom:6px;position:relative;animation:fadeIn .3s ease;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .win-item .wi-cat{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:#fef3c7;color:#b45309;display:inline-block;margin-bottom:4px}
+  .win-item .wi-text{font-size:13px;font-weight:600;line-height:1.4}
+  .win-item .wi-date{font-size:10px;color:var(--mu);margin-top:3px}
+  .win-item .wi-del{position:absolute;top:8px;right:10px;background:none;border:none;color:#d4a053;font-size:14px;cursor:pointer;padding:2px 6px;opacity:.4;transition:opacity .15s}
+  .win-item .wi-del:hover{opacity:1}
+  .win-export{margin-top:16px;text-align:center}
+  .win-export button{padding:10px 20px;border-radius:10px;border:1.5px solid var(--sl);background:var(--card);color:var(--sd);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+  .win-export button:hover{background:#e0f2fe}
+  .win-empty{text-align:center;padding:30px;color:#d4a053;font-size:13px;font-style:italic}
+
+  /* ═══ POMODORO TIMER ═══ */
+  .pomo{
+    background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:14px 16px;
+    margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  .pomo-time{
+    font-size:32px;font-weight:800;font-variant-numeric:tabular-nums;
+    color:var(--sd);min-width:90px;text-align:center;line-height:1;
+  }
+  .pomo-time.on-break{color:#f59e0b}
+  .pomo-info{flex:1;min-width:80px}
+  .pomo-mode-lbl{font-size:12px;font-weight:700;color:var(--tx)}
+  .pomo-sub{font-size:10px;color:var(--mu);margin-top:1px}
+  .pomo-btns{display:flex;gap:6px}
+  .pomo-btn{
+    padding:8px 16px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--card);
+    color:var(--mu);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;
+    transition:all .2s;
+  }
+  .pomo-btn:active{transform:scale(.95)}
+  .pomo-btn.active{border-color:var(--sl);color:var(--sd);background:#e0f2fe}
+  .pomo-btn.rst:hover{border-color:#f87171;color:#f87171}
+  .pomo-sessions{font-size:10px;color:var(--mu);text-align:center;white-space:nowrap}
+  .pomo-sessions .ct{color:var(--sd);font-weight:800;font-size:12px}
+
+  /* ═══ WEEK HISTORY ═══ */
+  .wk-nav{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+  .wk-nav-btn{
+    background:none;border:1.5px solid var(--bdr);border-radius:8px;padding:4px 10px;
+    color:var(--mu);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
+    transition:all .2s;
+  }
+  .wk-nav-btn:hover{border-color:var(--sl);color:var(--sd)}
+  .wk-nav-btn:disabled{opacity:.3;cursor:default}
+  .wk-hist-btn{
+    background:none;border:1.5px solid var(--bdr);border-radius:8px;padding:4px 10px;
+    color:var(--mu);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;
+    transition:all .2s;
+  }
+  .wk-hist-btn:hover{border-color:var(--sl);color:var(--sd);background:#e0f2fe}
+
+  .hist-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200;
+    display:none;align-items:flex-end;justify-content:center;
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  }
+  .hist-overlay.show{display:flex}
+  .hist-panel{
+    width:100%;max-width:500px;background:var(--bg);border-top:2px solid var(--sl);
+    border-radius:20px 20px 0 0;padding:20px 16px;
+    padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+    animation:slideUp .3s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto;
+  }
+  .hist-handle{width:36px;height:4px;background:var(--bdr);border-radius:2px;margin:0 auto 14px}
+  .hist-panel h2{font-size:16px;font-weight:800;margin-bottom:4px}
+  .hist-panel h2 span{color:var(--sg)}
+  .hist-sub{font-size:11px;color:var(--mu);margin-bottom:14px}
+
+  .hw{
+    background:var(--card);border:1px solid var(--bdr);border-radius:12px;
+    padding:14px;margin-bottom:8px;cursor:pointer;transition:all .15s;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .hw:hover{border-color:var(--sl)}
+  .hw.current{border-color:var(--sg);border-left:3px solid var(--sg)}
+  .hw-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .hw-label{font-size:13px;font-weight:700}
+  .hw-pct{font-size:12px;font-weight:800}
+  .hw-pct.good{color:#16a34a}.hw-pct.mid{color:#f59e0b}.hw-pct.low{color:#dc2626}
+  .hw-bar{height:6px;background:var(--bdr);border-radius:3px;overflow:hidden;margin-bottom:8px}
+  .hw-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sd),var(--sg));transition:width .4s}
+  .hw-tasks{font-size:11px;color:var(--mu);line-height:1.6}
+  .hw-tasks .hw-done{color:#16a34a;text-decoration:line-through;opacity:.7}
+  .hw-tasks .hw-miss{color:#dc2626}
+  .hw-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .hw-stat{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;background:#f0f7ff;color:var(--sd)}
+  .hw-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr)}
+  .hw.open .hw-expand{display:block}
 </style>
 </head>
 <body>
@@ -352,7 +464,26 @@
 <div class="hdr">
   <img src="logo.png" alt="Planner Logo" class="hdr-logo">
   <h1><span>Nency's Weekly Planner</span></h1>
-  <div class="wk">Apr 27 – May 1, 2026 · 🏙️ Seattle Offsite</div>
+  <div class="wk">May 11 – 15, 2026 · 🏆 Hackathon champs! Connect week.</div>
+  <div class="wk-nav">
+    <button class="wk-nav-btn" id="wkPrev" onclick="navWeek(-1)" title="Previous week">◀</button>
+    <button class="wk-hist-btn" onclick="openHistory()">📅 Week History</button>
+    <button class="wk-nav-btn" id="wkNext" onclick="navWeek(1)" title="Next week">▶</button>
+  </div>
+</div>
+
+<!-- ═══ POMODORO TIMER ═══ -->
+<div class="pomo" id="pomoBox">
+  <div class="pomo-time" id="pomoTimer">25:00</div>
+  <div class="pomo-info">
+    <div class="pomo-mode-lbl" id="pomoLabel">🎯 Focus Time</div>
+    <div class="pomo-sub" id="pomoSub">25 min work → 5 min break</div>
+  </div>
+  <div class="pomo-btns">
+    <button class="pomo-btn" id="pomoStartBtn" onclick="togglePomo()">▶ Start</button>
+    <button class="pomo-btn rst" onclick="resetPomo()">↺</button>
+  </div>
+  <div class="pomo-sessions"><span class="ct" id="pomoCount">0</span> sessions today</div>
 </div>
 
 <!-- Score — horizontal compact -->
@@ -457,53 +588,108 @@ review Auto-Fix rule changes"></textarea>
   </div>
 </div>
 
+<!-- ═══ WINS ═══ -->
+<div id="mWins" style="display:none">
+  <div class="wins-hdr">
+    <h2>🏆 My <span>Wins</span></h2>
+    <div class="wins-sub">Track every win — big or small. Perfect for Connects! ✨</div>
+  </div>
+
+  <div class="wins-count">
+    <div class="wc-stat"><div class="wc-num" id="wcTotal">0</div><div class="wc-lbl">Total Wins</div></div>
+    <div class="wc-stat"><div class="wc-num" id="wcMonth">0</div><div class="wc-lbl">This Month</div></div>
+    <div class="wc-stat"><div class="wc-num" id="wcBig">0</div><div class="wc-lbl">Big Wins</div></div>
+  </div>
+
+  <div class="win-input">
+    <h3>🌟 Add a Win</h3>
+    <input type="text" id="winInput" placeholder="What did you accomplish?" maxlength="200" onkeydown="if(event.key==='Enter')addWin()">
+    <div class="win-cats" id="winCats">
+      <button class="win-cat on" data-cat="🏆 Big Win" onclick="pickWinCat(this)">🏆 Big Win</button>
+      <button class="win-cat" data-cat="⚡ Quick Win" onclick="pickWinCat(this)">⚡ Quick Win</button>
+      <button class="win-cat" data-cat="🤝 Team Win" onclick="pickWinCat(this)">🤝 Team Win</button>
+      <button class="win-cat" data-cat="📊 Impact" onclick="pickWinCat(this)">📊 Impact</button>
+      <button class="win-cat" data-cat="🧠 Growth" onclick="pickWinCat(this)">🧠 Growth</button>
+      <button class="win-cat" data-cat="🎯 Delivery" onclick="pickWinCat(this)">🎯 Delivery</button>
+    </div>
+    <button class="win-add-btn" onclick="addWin()">+ Log This Win</button>
+  </div>
+
+  <div id="winList"></div>
+
+  <div class="win-export">
+    <button onclick="exportWins()">📋 Copy Wins for Connects</button>
+  </div>
+</div>
+
 <!-- ═══ MEETING PREP ═══ -->
 <div id="mMtg" style="display:none">
   <div class="sec">
-    <div class="sec-t">�️ Offsite — Seattle Team Week</div>
+    <div class="sec-t">🔴 MONDAY — ROB Workshop Prep (4:05 PM)</div>
     <div class="mtg">
-      <div class="mtg-t">Team Offsite — All Week</div>
-      <div class="mtg-m">📅 Mon–Fri · Seattle · Full team 🎯</div>
+      <div class="mtg-t">ROB Workshop Sync w/ Coco</div>
+      <div class="mtg-m">📅 Mon 4:05 PM · FY27 plan + CI team feedback</div>
       <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Travel + settle in</span><span class="md dok">Mon AM</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Block early AM for urgent sends</span><span class="md dw">⏰ Daily</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Update FY27 ROB plan with feedback</span><span class="md dl">⏰ Before 4PM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Add key dates to shared repo</span><span class="md dl">⏰ Before 4PM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Push commits so Jack & Coco can see</span><span class="md dl">⏰ Before 4PM</span></div>
       </div>
     </div>
   </div>
   <div class="sec">
-    <div class="sec-t">🔴 Must-Send Comms This Week</div>
+    <div class="sec-t">🔴 TUESDAY — Auto-Brief Deep Dive (10:05 AM)</div>
     <div class="mtg">
-      <div class="mtg-t">Auto-Fix Brief → Division SELs</div>
-      <div class="mtg-m">📧 Due Mon AM · Adoption update + enablement day pushed</div>
+      <div class="mtg-t">Auto-Brief Deep Dive — Region Stakeholders</div>
+      <div class="mtg-m">📅 Tue 10:05 AM · Demo process + pitch region repos</div>
       <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Draft brief with adoption data per division</span><span class="md dl">⏰ Sun night</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Add: global enablement day → next week (rule changes)</span><span class="md dl">⏰ Sun night</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send to all division SELs</span><span class="md dl">⏰ Mon 9am</span></div>
-      </div>
-    </div>
-    <div class="mtg">
-      <div class="mtg-t">ROB Comms — CI Workshops</div>
-      <div class="mtg-m">📧 Tue · May/June workshop dates + awareness</div>
-      <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Draft CI workshop dates + agenda comms</span><span class="md dw">⏰ Tue AM</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send teaser + full schedule</span><span class="md dw">⏰ Tue PM</span></div>
-      </div>
-    </div>
-    <div class="mtg">
-      <div class="mtg-t">VS Code Vibes — Invites + Comms</div>
-      <div class="mtg-m">📧 Thu · Target event date 5/8</div>
-      <div class="mtg-cl">
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Finalize content</span><span class="md dw">⏰ Wed</span></div>
-        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Send invites + comms</span><span class="md dw">⏰ Thu</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Prep end-to-end demo: extract → generate → deploy</span><span class="md dl">⏰ Mon PM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Prepare "region repo" pitch — save them time</span><span class="md dw">⏰ Tue AM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>VS Code intro talking points for non-coders</span><span class="md dw">⏰ Tue AM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Show IAR Hub + ROB Coach agent as proof</span><span class="md dw">⏰ In meeting</span></div>
       </div>
     </div>
   </div>
   <div class="sec">
-    <div class="sec-t">📋 Offsite Week Rules</div>
+    <div class="sec-t">🔴🔴 THURSDAY — Connect + Auto-Mate Presenting</div>
+    <div class="mtg">
+      <div class="mtg-t">Connect Self-Review — DUE THURSDAY</div>
+      <div class="mtg-m">⚠️ Impacts rewards! Use 🏆 Wins tab to pull evidence</div>
+      <div class="mtg-cl">
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Start draft Wednesday (pull from Wins)</span><span class="md dl">⏰ Wed</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Map wins to impact themes (Rev Mgmt, ROB, Growth)</span><span class="md dl">⏰ Wed PM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Finalize + submit before EOD Thursday</span><span class="md dl">⏰ Thu EOD</span></div>
+      </div>
+    </div>
+    <div class="mtg">
+      <div class="mtg-t">Auto-Mate Leader Community Call</div>
+      <div class="mtg-m">📅 Thu 11:30 AM + 7:30 PM · You're presenting both!</div>
+      <div class="mtg-cl">
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Prep presentation talking points</span><span class="md dw">⏰ Wed/Thu AM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Present AM session (11:30)</span><span class="md dl">⏰ Thu 11:30</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Present PM session (7:30)</span><span class="md dw">⏰ Thu 7:30PM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">🟣 FRIDAY — Catch the Vibe</div>
+    <div class="mtg">
+      <div class="mtg-t">Catch the Vibe: VS Code Club + Season 1</div>
+      <div class="mtg-m">📅 Fri 10:00 AM + 11:00 AM · Your shows!</div>
+      <div class="mtg-cl">
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Fix invite (roadmap page ready)</span><span class="md dw">⏰ Thu/Fri AM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Prep content for both sessions</span><span class="md dw">⏰ Fri AM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Run VS Code Club (10 AM) 🎤</span><span class="md dok">⏰ Fri 10AM</span></div>
+        <div class="mi" onclick="this.classList.toggle('done')"><div class="mc">✓</div><span>Run Season 1 (11 AM) 🎤</span><span class="md dok">⏰ Fri 11AM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-t">📋 This Week's Rules</div>
     <div class="rules">
-      <b>🏙️ Offsite:</b> Sessions run all day — <b style="color:#fbbf24">real work = early AM + evenings</b><br>
-      <b>🔴 Tomorrow:</b> Auto-Fix Brief MUST go out <b style="color:#f87171">Monday morning</b><br>
-      <b>📧 Comms week:</b> 3 major sends — SEL brief, CI workshops, VS Code Vibes
+      <b>🏆 Celebration:</b> YOU WON THE HACKATHON! Start the week <b style="color:#fbbf24">with that energy</b><br>
+      <b>🔴 Thursday:</b> Connect is DUE — <b style="color:#f87171">start writing Wednesday</b>, use Wins tab<br>
+      <b>📧 Comms:</b> Auto-Fix rule #1 → leaders → field sellers (send by Wed)<br>
+      <b>🎤 Presenting:</b> Auto-Mate Thu (2x) + Catch the Vibe Fri (2x) = <b style="color:#fbbf24">4 presentations!</b>
     </div>
   </div>
 </div>
@@ -512,6 +698,7 @@ review Auto-Fix rule changes"></textarea>
 <div class="bnav">
   <button class="bnav-btn on" id="b1" onclick="showMode('tasks')"><span class="ico"><img src="icon-tasks.png" alt="Tasks"></span>Tasks</button>
   <button class="bnav-btn" id="b2" onclick="showMode('brain')"><span class="ico"><img src="icon-dump.png" alt="Dump"></span>Dump</button>
+  <button class="bnav-btn" id="b5" onclick="showMode('wins')"><span class="ico" style="font-size:20px">🏆</span>Wins</button>
   <button class="bnav-btn" id="b4" onclick="showMode('me')"><span class="ico"><img src="icon-me.png" alt="Me"></span>Me</button>
   <button class="bnav-btn" id="b3" onclick="showMode('mtg')"><span class="ico"><img src="icon-prep.png" alt="Prep"></span>Prep</button>
 </div>
@@ -538,58 +725,73 @@ review Auto-Fix rule changes"></textarea>
 <div class="cel" id="cel" onclick="this.classList.remove('show')"><div class="cel-b"><div class="e" id="cE">🎉</div><h2 id="cT">Done!</h2><p id="cM">Keep going!</p></div></div>
 <div class="cel" id="cyM" onclick="this.classList.remove('show')"><div class="cel-b"><div class="e">📦➡️</div><h2 id="cyT">Moved!</h2><p id="cyP">Carried over</p></div></div>
 
+<!-- ═══ WEEK HISTORY OVERLAY ═══ -->
+<div class="hist-overlay" id="histOverlay" onclick="if(event.target===this)closeHistory()">
+  <div class="hist-panel">
+    <div class="hist-handle"></div>
+    <h2>📅 Week <span>History</span></h2>
+    <div class="hist-sub">Tap a week to see what you accomplished — great for Connects! ✨</div>
+    <div id="histList"></div>
+  </div>
+</div>
+
 <script>
 // Register service worker
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 
 const DAYS=[
-  {k:'mon',n:'Mon',d:'27',l:'Monday'},{k:'tue',n:'Tue',d:'28',l:'Tuesday'},
-  {k:'wed',n:'Wed',d:'29',l:'Wednesday'},{k:'thu',n:'Thu',d:'30',l:'Thursday'},
-  {k:'fri',n:'Fri',d:'1',l:'Friday'},
+  {k:'mon',n:'Mon',d:'11',l:'Monday'},{k:'tue',n:'Tue',d:'12',l:'Tuesday'},
+  {k:'wed',n:'Wed',d:'13',l:'Wednesday'},{k:'thu',n:'Thu',d:'14',l:'Thursday'},
+  {k:'fri',n:'Fri',d:'15',l:'Friday'},
 ];
 const TASKS={
-  mon:[{cat:'🔴 SEND BEFORE 9AM',tasks:[
-    {n:'Auto-Fix Brief → Division SELs',w:'Adoption update + global enablement pushed to next week',t:'fire',tg:'t-fire',tl:'DUE NOW'},
-  ]},{cat:'🟣 HACKATHON',tasks:[
-    {n:'Finish team repo setup',w:'You\'re the lead! Follow team directions',t:'fire',tg:'t-fire',tl:'LEAD'},
-    {n:'Verify hackathon readiness checklist',w:'Confirm team has everything they need',t:'zap',tg:'t-zap',tl:'⚡ CHECK'},
-  ]},{cat:'🏙️ OFFSITE',tasks:[
-    {n:'Offsite Day 1 sessions',w:'Seattle team offsite',t:'',tg:'t-mic',tl:'OFFSITE'},
+  mon:[{cat:'🔴 ROB — PREP FOR 4 PM SYNC',tasks:[
+    {n:'Update FY27 ROB plan',w:'Add feedback + key dates before ROB Workshop sync at 4:05',t:'fire',tg:'t-fire',tl:'DUE 4PM'},
+    {n:'Push updates to shared repo (Jack & Coco)',w:'Key dates, CI team feedback, planning updates',t:'fire',tg:'t-fire',tl:'BEFORE SYNC'},
+  ]},{cat:'🟡 REV MANAGEMENT',tasks:[
+    {n:'Start drafting Auto-Fix rule #1 comms',w:'Global opted-in — leaders share with field sellers',t:'',tg:'t-clk',tl:'THIS WEEK'},
+  ]},{cat:'📅 MEETINGS',tasks:[
+    {n:'Jake <> Nency 1:1 (11:05 AM)',w:'Manager sync — share hackathon win! 🏆',t:'',tg:'t-mic',tl:'1:1'},
+    {n:'Auto-Upload Last Mile (11:30 AM)',w:'Charles S. — pilot to production',t:'',tg:'t-mic',tl:'MEETING'},
+    {n:'ROB Workshop Sync (4:05 PM)',w:'Coco — CI team planning, share FY27 updates',t:'fire',tg:'t-fire',tl:'🔴 KEY'},
   ]}],
-  tue:[{cat:'🔵 AUTO-FIX',tasks:[
-    {n:'Deploy revamped Auto-Fix site',w:'Better visuals, cleaner design — push live',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
-  ]},{cat:'🔵 ROB',tasks:[
-    {n:'Send CI workshop comms + dates',w:'May/June Continuous Improvement workshops',t:'fire',tg:'t-clk',tl:'COMMS'},
-    {n:'Quick teaser: CI workshops coming',w:'Short email to build awareness',t:'zap',tg:'t-zap',tl:'⚡ QUICK'},
-  ]},{cat:'🏙️ OFFSITE',tasks:[
-    {n:'Offsite Day 2 sessions',w:'Seattle team offsite',t:'',tg:'t-mic',tl:'OFFSITE'},
+  tue:[{cat:'🔴 AUTO-BRIEF DEEP DIVE (10:05 AM)',tasks:[
+    {n:'Prep demo: show Auto-Brief process end-to-end',w:'How we extract → generate → deploy briefs',t:'fire',tg:'t-fire',tl:'PRESENT'},
+    {n:'Pitch region repos — can they duplicate?',w:'Ask stakeholders if they want their own repo to save time',t:'fire',tg:'t-fire',tl:'KEY ASK'},
+    {n:'Be the VS Code influencer 💪',w:'Some attendees are new to VS Code — show what\'s possible',t:'fire',tg:'t-clk',tl:'INSPIRE'},
+  ]},{cat:'🟡 REV MANAGEMENT',tasks:[
+    {n:'Finalize Auto-Fix rule #1 comms draft',w:'Polish + get ready to send Wed',t:'',tg:'t-clk',tl:'DRAFT'},
   ]}],
-  wed:[{cat:'🔵 AUTO-FIX',tasks:[
-    {n:'Build fresh enablement materials',w:'Before global enablement day next week',t:'fire',tg:'t-fire',tl:'BIG IMPACT'},
-    {n:'Include rule enhancements from feedback',w:'New rules driving the date push',t:'',tg:'',tl:''},
-  ]},{cat:'🔵 ROB',tasks:[
-    {n:'Update IAR Hub — May topics',w:'Add May IAR agenda items',t:'fire',tg:'t-clk',tl:'THIS WEEK'},
-  ]},{cat:'🏙️ OFFSITE',tasks:[
-    {n:'Offsite Day 3 sessions',w:'Seattle team offsite',t:'',tg:'t-mic',tl:'OFFSITE'},
+  wed:[{cat:'🔴 CONNECT PREP — DUE TOMORROW',tasks:[
+    {n:'Start writing Connect self-review',w:'Pull wins from 🏆 Wins tab — 16 wins loaded!',t:'fire',tg:'t-fire',tl:'DUE THU'},
+    {n:'Map wins to impact themes',w:'Revenue Mgmt, ROB automation, field enablement, growth',t:'fire',tg:'t-fire',tl:'REWARDS'},
+  ]},{cat:'🟡 REV MANAGEMENT',tasks:[
+    {n:'Send Auto-Fix rule #1 comms to leaders',w:'For leaders to cascade to field sellers',t:'fire',tg:'t-fire',tl:'SEND'},
+    {n:'Start SharePoint enablement refresh',w:'Update rev management materials in SP',t:'',tg:'t-clk',tl:'THIS WEEK'},
+  ]},{cat:'📅 MEETINGS',tasks:[
+    {n:'AMS ROB & Rev Mgmt Sync (4:35 PM)',w:'Leadership sync — come prepped',t:'',tg:'t-mic',tl:'LEADERSHIP'},
   ]}],
-  thu:[{cat:'🟣 VS CODE',tasks:[
-    {n:'Finish Catching VS Code Vibes',w:'Content + polish — target launch 5/8',t:'fire',tg:'t-clk',tl:'DUE 5/8'},
-    {n:'Send VS Code Vibes invites + comms',w:'Get it on calendars!',t:'fire',tg:'t-fire',tl:'COMMS'},
-  ]},{cat:'🔵 AUTO-FIX',tasks:[
-    {n:'Finalize enablement before global day',w:'Last pass on materials',t:'',tg:'t-clk',tl:'DEADLINE'},
-  ]},{cat:'🏙️ OFFSITE',tasks:[
-    {n:'Offsite Day 4 sessions',w:'Seattle team offsite',t:'',tg:'t-mic',tl:'OFFSITE'},
+  thu:[{cat:'🔴🔴 CONNECT DUE TODAY',tasks:[
+    {n:'Finalize + submit Connect',w:'This impacts rewards — must show impact! Use Wins tab 📋',t:'fire',tg:'t-fire',tl:'⚠️ DEADLINE'},
+  ]},{cat:'🔴 PRESENTING',tasks:[
+    {n:'Auto-Mate Leader Community Call (11:30 AM)',w:'You\'re presenting! AM session',t:'fire',tg:'t-fire',tl:'PRESENT'},
+    {n:'Auto-Mate Leader Community Call PM (7:30 PM)',w:'Repeat session for PM-friendly timezone',t:'fire',tg:'t-fire',tl:'PRESENT'},
+  ]},{cat:'📅 MEETINGS',tasks:[
+    {n:'EMEA ROB & Rev Mgmt Sync (9:35 AM)',w:'Regional leadership sync',t:'',tg:'t-mic',tl:'LEADERSHIP'},
+    {n:'Perf Excellence Weekly (12:35 PM)',w:'Jake\'s team meeting',t:'',tg:'t-mic',tl:'TEAM'},
+    {n:'RevS Lunch & Learn (3:05 PM)',w:'Revenue Strategy Core Capabilities',t:'',tg:'t-mic',tl:'LEARNING'},
   ]}],
-  fri:[{cat:'🟢 STRATEGIC PLANNING',tasks:[
-    {n:'FY27 ROB planning kickoff',w:'Create system + framework for FY27',t:'fire',tg:'t-fire',tl:'STRATEGIC'},
-    {n:'Design repeatable enablement system',w:'VS Code-based — reuse for every new field landing',t:'fire',tg:'t-clk',tl:'NEW IDEA'},
-    {n:'Metric enablement concept w/ Finance',w:'Partnership — try something new via VS Code',t:'',tg:'',tl:''},
-  ]},{cat:'🏙️ OFFSITE',tasks:[
-    {n:'Offsite Day 5 — wrap up',w:'Seattle team offsite — last day!',t:'',tg:'t-mic',tl:'OFFSITE'},
+  fri:[{cat:'🟣 CATCH THE VIBE',tasks:[
+    {n:'Fix Catch the Vibe invite',w:'Update invite — roadmap page is ready from last week',t:'fire',tg:'t-fire',tl:'FIX TODAY'},
+    {n:'Catch the Vibe: VS Code Club (10:00 AM)',w:'Your event! Run it 🎤',t:'fire',tg:'t-clk',tl:'YOUR SHOW'},
+    {n:'Catch the Vibe: Season 1 (11:00 AM)',w:'You\'re the sole required attendee — own it',t:'fire',tg:'t-fire',tl:'YOUR SHOW'},
+  ]},{cat:'🟡 REV MANAGEMENT',tasks:[
+    {n:'Add Catch the Vibe to rev mgmt comms',w:'Cross-promote: want to learn VS Code? Join Catch the Vibe!',t:'zap',tg:'t-zap',tl:'⚡ QUICK'},
+    {n:'Continue SharePoint enablement refresh',w:'Carry over if not done Wed/Thu',t:'',tg:'',tl:''},
   ]}],
 };
 
-let aDay='mon';const SK='np-v5-20260427';
+let aDay='mon';const SK='np-v6-20260511';
 
 function buildTabs(){
   document.getElementById('tabs').innerHTML=DAYS.map(d=>
@@ -622,11 +824,14 @@ function showMode(m){
   document.getElementById('mBrain').style.display=m==='brain'?'':'none';
   document.getElementById('mMe').style.display=m==='me'?'':'none';
   document.getElementById('mMtg').style.display=m==='mtg'?'':'none';
+  document.getElementById('mWins').style.display=m==='wins'?'':'none';
   document.getElementById('b1').classList.toggle('on',m==='tasks');
   document.getElementById('b2').classList.toggle('on',m==='brain');
   document.getElementById('b4').classList.toggle('on',m==='me');
   document.getElementById('b3').classList.toggle('on',m==='mtg');
+  document.getElementById('b5').classList.toggle('on',m==='wins');
   if(m==='me'){buildMeTab();loadMe()}
+  if(m==='wins'){renderWins()}
 }
 function sw(d){
   aDay=d;
@@ -839,7 +1044,7 @@ function quickAdd(i){
 }
 
 // ═══ ME TAB — Grateful + Health ═══
-const MK='np-me-20260427';
+const MK='np-me-20260511';
 let meDay='mon';
 
 function buildMeTab(){
@@ -940,6 +1145,345 @@ function loadMe(){
   renderWater(d.water);
   renderHealth(d);
   updateMeSummary(d);
+}
+
+// ═══ POMODORO TIMER ═══
+const PK='np-pomo-v1';
+let pomoInterval=null,pomoSeconds=25*60,pomoRunning=false,pomoIsBreak=false,pomoSessions=0;
+
+function loadPomo(){
+  try{
+    const d=JSON.parse(localStorage.getItem(PK));
+    if(d&&d.date===new Date().toDateString())pomoSessions=d.sessions||0;
+  }catch(e){}
+  document.getElementById('pomoCount').textContent=pomoSessions;
+}
+function savePomo(){localStorage.setItem(PK,JSON.stringify({date:new Date().toDateString(),sessions:pomoSessions}))}
+
+function updatePomoDisplay(){
+  const m=Math.floor(pomoSeconds/60),s=pomoSeconds%60;
+  const t=document.getElementById('pomoTimer');
+  t.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  t.classList.toggle('on-break',pomoIsBreak);
+  document.getElementById('pomoLabel').textContent=pomoIsBreak?'🌿 Break Time':'🎯 Focus Time';
+  document.getElementById('pomoSub').textContent=pomoIsBreak?'Rest your eyes, stretch, breathe':'25 min work → 5 min break';
+  document.getElementById('pomoCount').textContent=pomoSessions;
+}
+
+function togglePomo(){
+  const btn=document.getElementById('pomoStartBtn');
+  if(pomoRunning){
+    clearInterval(pomoInterval);pomoRunning=false;
+    btn.textContent='▶ Start';btn.classList.remove('active');
+  }else{
+    pomoRunning=true;btn.textContent='⏸';btn.classList.add('active');
+    pomoInterval=setInterval(()=>{
+      pomoSeconds--;
+      if(pomoSeconds<=0){
+        clearInterval(pomoInterval);pomoRunning=false;
+        btn.textContent='▶ Start';btn.classList.remove('active');
+        if(!pomoIsBreak){
+          pomoSessions++;savePomo();
+          pomoIsBreak=true;pomoSeconds=5*60;
+          // Toast
+          const cel=document.getElementById('cel');
+          document.getElementById('cE').textContent='🍅';
+          document.getElementById('cT').textContent='Pomodoro done!';
+          document.getElementById('cM').textContent='Take a 5-min break 🌿';
+          cel.classList.add('show');setTimeout(()=>cel.classList.remove('show'),2000);
+        }else{
+          pomoIsBreak=false;pomoSeconds=25*60;
+          const cel=document.getElementById('cel');
+          document.getElementById('cE').textContent='🎯';
+          document.getElementById('cT').textContent='Break over!';
+          document.getElementById('cM').textContent='Ready for another round?';
+          cel.classList.add('show');setTimeout(()=>cel.classList.remove('show'),1500);
+        }
+      }
+      updatePomoDisplay();
+    },1000);
+  }
+  updatePomoDisplay();
+}
+
+function resetPomo(){
+  clearInterval(pomoInterval);pomoRunning=false;pomoIsBreak=false;pomoSeconds=25*60;
+  document.getElementById('pomoStartBtn').textContent='▶ Start';
+  document.getElementById('pomoStartBtn').classList.remove('active');
+  updatePomoDisplay();
+}
+
+loadPomo();updatePomoDisplay();
+
+// ═══ WEEK HISTORY & ARCHIVE ═══
+const HK='np-history-v1';
+const CURRENT_WEEK='2026-05-11';
+
+function getHistory(){
+  try{return JSON.parse(localStorage.getItem(HK))||{}}catch(e){return{}}
+}
+function saveHistory(h){localStorage.setItem(HK,JSON.stringify(h))}
+
+// Seed past weeks if history is empty
+(function seedHistory(){
+  const h=getHistory();
+  if(Object.keys(h).length>0) return;
+  // Apr 27 – May 1 (Seattle Offsite week)
+  h['2026-04-27']={label:'Apr 27 – May 1, 2026',theme:'🏙️ Seattle Offsite',
+    tasks:[
+      {n:'Auto-Fix Brief → Division SELs',done:true,day:'Mon'},
+      {n:'Finish hackathon team repo setup',done:true,day:'Mon'},
+      {n:'Deploy revamped Auto-Fix site',done:true,day:'Tue'},
+      {n:'Send CI workshop comms + dates',done:true,day:'Tue'},
+      {n:'Build fresh enablement materials',done:true,day:'Wed'},
+      {n:'Update IAR Hub — May topics',done:true,day:'Wed'},
+      {n:'Finish Catching VS Code Vibes content',done:true,day:'Thu'},
+      {n:'Send VS Code Vibes invites + comms',done:true,day:'Thu'},
+      {n:'Finalize enablement before global day',done:true,day:'Thu'},
+      {n:'FY27 ROB planning kickoff',done:false,day:'Fri'},
+      {n:'Design repeatable enablement system',done:false,day:'Fri'},
+    ],
+    stats:{total:11,done:9},
+    wins:['Won Microsoft Hackathon! 🏆','Deployed Auto-Fix site revamp','Sent CI workshop comms']
+  };
+  // May 4 – May 9 (Auto Brief shipping week)
+  h['2026-05-04']={label:'May 4 – 9, 2026',theme:'📧 Auto Brief Ship Week',
+    tasks:[
+      {n:'Generate USCI Auto Brief',done:true,day:'Mon'},
+      {n:'Generate USPSI Auto Brief',done:true,day:'Mon'},
+      {n:'Generate WW Enterprise Auto Brief',done:true,day:'Mon'},
+      {n:'QA all 6 division briefs',done:true,day:'Tue'},
+      {n:'Send AMI invites (17 users)',done:true,day:'Tue'},
+      {n:'Send USCI invites (19 users)',done:true,day:'Wed'},
+      {n:'Send USPSI invites (7 users)',done:true,day:'Wed'},
+      {n:'Deploy mobile CSS to all briefs',done:true,day:'Thu'},
+      {n:'Jake\'s team all-6-role invites (54 invites)',done:true,day:'Thu'},
+      {n:'Direct-email workaround for portal issues',done:true,day:'Thu'},
+      {n:'Pivot to Outlook-native HTML delivery',done:true,day:'Thu'},
+      {n:'Build reusable brief_to_outlook parser',done:true,day:'Fri'},
+    ],
+    stats:{total:12,done:12},
+    wins:['Shipped Auto Briefs to 6 divisions','Sent 50+ invites to field leaders','Built Outlook email parser','100% completion week! 👑']
+  };
+  saveHistory(h);
+})();
+
+// Auto-archive current week state
+function archiveCurrentWeek(){
+  const h=getHistory();
+  const tasks=[];
+  let total=0,done=0;
+  DAYS.forEach(d=>{
+    const pn=document.getElementById('p-'+d.k);
+    if(!pn) return;
+    pn.querySelectorAll('.tk').forEach(t=>{
+      const name=t.querySelector('.tn');
+      const isDone=t.classList.contains('done');
+      tasks.push({n:name?name.textContent.trim():'',done:isDone,day:d.n});
+      total++;if(isDone)done++;
+    });
+  });
+  const wins=getWins().filter(w=>w.month&&w.month.includes('May 2026')).map(w=>w.text).slice(0,5);
+  h[CURRENT_WEEK]={label:'May 11 – 15, 2026',theme:'🏆 Hackathon champs! Connect week.',
+    tasks,stats:{total,done},wins,current:true};
+  saveHistory(h);
+}
+
+// Save archive whenever tasks change
+const origSave=save;
+save=function(){origSave();archiveCurrentWeek();};
+
+function openHistory(){
+  archiveCurrentWeek(); // save latest state
+  const h=getHistory();
+  const weeks=Object.keys(h).sort().reverse();
+  if(!weeks.length){
+    document.getElementById('histList').innerHTML='<div style="text-align:center;padding:30px;color:#64748b">No history yet — complete this week to start!</div>';
+  } else {
+    document.getElementById('histList').innerHTML=weeks.map(wk=>{
+      const w=h[wk];
+      const pct=w.stats.total?Math.round(w.stats.done/w.stats.total*100):0;
+      const pctCls=pct>=80?'good':pct>=50?'mid':'low';
+      const isCurrent=wk===CURRENT_WEEK;
+      const doneTasks=w.tasks.filter(t=>t.done);
+      const missTasks=w.tasks.filter(t=>!t.done);
+      return `<div class="hw${isCurrent?' current':''}" onclick="this.classList.toggle('open')">
+        <div class="hw-top">
+          <div class="hw-label">${isCurrent?'🟢 ':''} ${w.label}</div>
+          <div class="hw-pct ${pctCls}">${pct}%</div>
+        </div>
+        <div class="hw-bar"><div class="hw-bar-fill" style="width:${pct}%"></div></div>
+        <div class="hw-stats">
+          <span class="hw-stat">✅ ${w.stats.done}/${w.stats.total} tasks</span>
+          ${w.theme?`<span class="hw-stat">${w.theme}</span>`:''}
+          ${w.wins&&w.wins.length?`<span class="hw-stat">🏆 ${w.wins.length} wins</span>`:''}
+        </div>
+        <div class="hw-expand">
+          <div class="hw-tasks">
+            <b style="font-size:10px;color:#36648b">✅ COMPLETED:</b><br>
+            ${doneTasks.map(t=>`<span class="hw-done">${t.day}: ${t.n}</span><br>`).join('')||'<em>None yet</em><br>'}
+            ${missTasks.length?`<br><b style="font-size:10px;color:#dc2626">❌ NOT DONE:</b><br>
+            ${missTasks.map(t=>`<span class="hw-miss">${t.day}: ${t.n}</span><br>`).join('')}`:''}
+            ${w.wins&&w.wins.length?`<br><b style="font-size:10px;color:#f59e0b">🏆 WINS:</b><br>
+            ${w.wins.map(x=>`• ${x}<br>`).join('')}`:''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('histOverlay').classList.add('show');
+}
+
+function closeHistory(){
+  document.getElementById('histOverlay').classList.remove('show');
+}
+
+function navWeek(dir){
+  const h=getHistory();
+  const weeks=Object.keys(h).sort();
+  const idx=weeks.indexOf(CURRENT_WEEK);
+  // For now, just open history to browse
+  openHistory();
+}
+
+// Archive on first load
+setTimeout(archiveCurrentWeek,1000);
+
+// ═══ WINS TAB ═══
+const WK='np-wins-v1';
+
+function getWins(){
+  try{return JSON.parse(localStorage.getItem(WK))||[]}catch(e){return[]}
+}
+function saveWins(w){localStorage.setItem(WK,JSON.stringify(w))}
+
+// Seed hackathon win if fresh
+(function seedWins(){
+  const w=getWins();
+  if(!w.length){
+    w.push({text:'🏆 WON THE MICROSOFT HACKATHON! Team effort — built AI-powered tools that impressed the judges!',cat:'🏆 Big Win',date:'2026-05-11',month:'May 2026'});
+    w.push({text:'Built & shipped Auto Briefs to 6 divisions (AMI, USCI, USPSI, EMEA, Asia, WWE) — automated ROB meeting prep for 50+ field leaders',cat:'📊 Impact',date:'2026-05-07',month:'May 2026'});
+    w.push({text:'Created IAR Leader Hub on Azure SWA — single destination for all ROB prep, focus metrics, and coaching',cat:'🏆 Big Win',date:'2026-04-20',month:'Apr 2026'});
+    w.push({text:'Built ROB Coach agent in Teams — deployed to production with 13 capabilities',cat:'🧠 Growth',date:'2026-04-15',month:'Apr 2026'});
+    w.push({text:'Leveled up from zero code to Python, HTML/CSS, PowerShell, Azure deployments — all through Copilot',cat:'🧠 Growth',date:'2026-03-01',month:'Mar 2026'});
+    // OG planner wins from FY26 H1/H2
+    w.push({text:'Built & deployed the Auto-Fix Tracker (V1 & V2) to Azure — interactive dashboard tracking pipeline hygiene across all Enterprise & SME&C areas globally, with Bicep IaC',cat:'📊 Impact',date:'2026-02-15',month:'Feb 2026'});
+    w.push({text:'Created Agent Adoption Leaderboard, Top 50 Hygiene Opportunities view, and area-level user summaries — giving leaders visibility into $3.1B+ pipeline at risk with MSX action links',cat:'📊 Impact',date:'2026-02-14',month:'Feb 2026'});
+    w.push({text:'Developed the FAME Agent and Auto-Mate Cheat Sheet — innovative AI-powered enablement tools helping leaders land Auto-Mate in a new way',cat:'🎯 Delivery',date:'2026-02-13',month:'Feb 2026'});
+    w.push({text:'Built 20+ Python automation scripts — data matching, pipeline analysis, leaderboard generation, and dashboard updates, turning manual processes into repeatable pipelines',cat:'🧠 Growth',date:'2026-02-12',month:'Feb 2026'});
+    w.push({text:'Delivered Learning Day presentations for EMEA and ANZ sellers — training on Auto-Mate tools, pipeline hygiene best practices, and agent adoption workflows',cat:'🎯 Delivery',date:'2026-02-11',month:'Feb 2026'});
+    w.push({text:'Built the ROB Hub with 284 searchable metrics, MSXI links, and definitions — demoed at Tech Connect',cat:'🏆 Big Win',date:'2026-02-10',month:'Feb 2026'});
+    w.push({text:'Designed ROB Hub v3 features and built a Declarative Agent with Teams integration for AI-powered metric coaching',cat:'🧠 Growth',date:'2026-02-09',month:'Feb 2026'});
+    w.push({text:'Authored ROB Hub Operational Plan, IAR Leader Hub README, and governance docs — establishing ownership, onboarding, and clear accountability',cat:'🎯 Delivery',date:'2026-02-08',month:'Feb 2026'});
+    w.push({text:'Presented at Tech Connect as a neurodivergent non-developer — broke barriers by showing others how to use AI tools to build real solutions',cat:'🏆 Big Win',date:'2026-02-07',month:'Feb 2026'});
+    w.push({text:'Pioneered AI-assisted development as a non-developer — using GitHub Copilot to build production-quality dashboards, agents, and automation from scratch',cat:'🧠 Growth',date:'2026-01-15',month:'Jan 2026'});
+    saveWins(w);
+  }
+})();
+
+function pickWinCat(btn){
+  document.querySelectorAll('.win-cat').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function addWin(){
+  const inp=document.getElementById('winInput');
+  const text=inp.value.trim();
+  if(!text)return;
+  const catBtn=document.querySelector('.win-cat.on');
+  const cat=catBtn?catBtn.dataset.cat:'⚡ Quick Win';
+  const now=new Date();
+  const date=now.toISOString().slice(0,10);
+  const month=now.toLocaleDateString('en-US',{month:'short',year:'numeric'});
+  const w=getWins();
+  w.unshift({text,cat,date,month});
+  saveWins(w);
+  inp.value='';
+  renderWins();
+  // Mini celebration
+  const cel=document.getElementById('cel');
+  document.getElementById('cE').textContent='🏆';
+  document.getElementById('cT').textContent='WIN LOGGED!';
+  document.getElementById('cM').textContent='You\'re amazing! 💛';
+  cel.classList.add('show');setTimeout(()=>cel.classList.remove('show'),1200);
+}
+
+function deleteWin(i){
+  const w=getWins();
+  w.splice(i,1);
+  saveWins(w);
+  renderWins();
+}
+
+function renderWins(){
+  const w=getWins();
+  const now=new Date();
+  const thisMonth=now.toLocaleDateString('en-US',{month:'short',year:'numeric'});
+
+  // Stats
+  document.getElementById('wcTotal').textContent=w.length;
+  document.getElementById('wcMonth').textContent=w.filter(x=>x.month===thisMonth).length;
+  document.getElementById('wcBig').textContent=w.filter(x=>x.cat==='🏆 Big Win').length;
+
+  if(!w.length){
+    document.getElementById('winList').innerHTML='<div class="win-empty">No wins yet — you\'re about to change that! 🌟</div>';
+    return;
+  }
+
+  // Group by month
+  const groups={};
+  w.forEach((win,i)=>{
+    const mk=win.month||'Other';
+    if(!groups[mk])groups[mk]=[];
+    groups[mk].push({...win,idx:i});
+  });
+
+  let html='';
+  Object.keys(groups).forEach(month=>{
+    html+=`<div class="win-month">🗓️ ${month} (${groups[month].length})</div>`;
+    groups[month].forEach(win=>{
+      const d=new Date(win.date);
+      const dateStr=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+      html+=`<div class="win-item">
+        <span class="wi-cat">${win.cat}</span>
+        <button class="wi-del" onclick="event.stopPropagation();deleteWin(${win.idx})">✕</button>
+        <div class="wi-text">${win.text}</div>
+        <div class="wi-date">${dateStr}</div>
+      </div>`;
+    });
+  });
+
+  document.getElementById('winList').innerHTML=html;
+}
+
+function exportWins(){
+  const w=getWins();
+  if(!w.length){alert('No wins to export yet!');return;}
+  const groups={};
+  w.forEach(win=>{
+    const mk=win.month||'Other';
+    if(!groups[mk])groups[mk]=[];
+    groups[mk].push(win);
+  });
+  let txt='WINS & ACCOMPLISHMENTS — Nency Yera\n'+'═'.repeat(45)+'\n\n';
+  Object.keys(groups).forEach(month=>{
+    txt+=month.toUpperCase()+'\n'+'-'.repeat(20)+'\n';
+    groups[month].forEach(win=>{
+      txt+=`[${win.cat}] ${win.text} (${win.date})\n`;
+    });
+    txt+='\n';
+  });
+  navigator.clipboard.writeText(txt).then(()=>{
+    const cel=document.getElementById('cel');
+    document.getElementById('cE').textContent='📋';
+    document.getElementById('cT').textContent='COPIED!';
+    document.getElementById('cM').textContent='Paste into Connects ✨';
+    cel.classList.add('show');setTimeout(()=>cel.classList.remove('show'),1500);
+  }).catch(()=>{
+    // Fallback
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    alert('Wins copied to clipboard!');
+  });
 }
 </script>
 </body>
