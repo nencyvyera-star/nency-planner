@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Planner">
@@ -903,7 +903,7 @@ function co(f,t){
     div.className='tk';div.dataset.t='';div.dataset.d=t;
     div.dataset.id=newId;div.dataset.custom='1';
     div.setAttribute('onclick','tog(this)');
-    div.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${cleanName} <span class="tg t-carry">📦</span></div><div class="tw">Carried from ${f}</div></div>`;
+    div.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${escHtml(cleanName)} <span class="tg t-carry">📦</span></div><div class="tw">Carried from ${escHtml(f)}</div></div>`;
     tgt.appendChild(div);
     tk.remove();
   });
@@ -995,7 +995,7 @@ function addBD(i){
   tk.className='tk';tk.dataset.t='';tk.dataset.d=d;
   tk.dataset.id=newId;tk.dataset.custom='1';
   tk.setAttribute('onclick','tog(this)');
-  tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${x} <span class="tg t-carry">🧠</span></div><div class="tw">From brain dump</div></div>`;
+  tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${escHtml(x)} <span class="tg t-carry">🧠</span></div><div class="tw">From brain dump</div></div>`;
   cr.appendChild(tk);cr.style.display='';r.style.opacity='.3';r.style.pointerEvents='none';
   r.querySelector('.bda').textContent='✓';uAll();
 }
@@ -1061,7 +1061,7 @@ function load(){
       tk.dataset.id=c.id;tk.dataset.custom='1';
       tk.setAttribute('onclick','tog(this)');
       const tag=c.tl?` <span class="tg ${c.tg||'t-carry'}">${c.tl}</span>`:'';
-      tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${c.text}${tag}</div><div class="tw">${c.w||''}</div></div>`;
+      tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${escHtml(c.text)}${tag}</div><div class="tw">${escHtml(c.w||'')}</div></div>`;
       cr.appendChild(tk);cr.style.display='';
     });
   });
@@ -1241,7 +1241,7 @@ function quickAdd(i){
   tk.className='tk';tk.dataset.t='';tk.dataset.d=day;
   tk.dataset.id=newId;tk.dataset.custom='1';
   tk.setAttribute('onclick','tog(this)');
-  tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${text} <span class="tg t-carry">🧠</span></div><div class="tw">From quick dump</div></div>`;
+  tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${escHtml(text)} <span class="tg t-carry">🧠</span></div><div class="tw">From quick dump</div></div>`;
   cr.appendChild(tk);cr.style.display='';
 
   // Mark as added
@@ -1532,11 +1532,11 @@ function openHistory(){
         <div class="hw-expand">
           <div class="hw-tasks">
             <b style="font-size:10px;color:#36648b">✅ COMPLETED:</b><br>
-            ${doneTasks.map(t=>`<span class="hw-done">${t.day}: ${t.n}</span><br>`).join('')||'<em>None yet</em><br>'}
+            ${doneTasks.map(t=>`<span class="hw-done">${escHtml(t.day)}: ${escHtml(t.n)}</span><br>`).join('')||'<em>None yet</em><br>'}
             ${missTasks.length?`<br><b style="font-size:10px;color:#dc2626">❌ NOT DONE:</b><br>
-            ${missTasks.map(t=>`<span class="hw-miss">${t.day}: ${t.n}</span><br>`).join('')}`:''}
+            ${missTasks.map(t=>`<span class="hw-miss">${escHtml(t.day)}: ${escHtml(t.n)}</span><br>`).join('')}`:''}
             ${w.wins&&w.wins.length?`<br><b style="font-size:10px;color:#f59e0b">🏆 WINS:</b><br>
-            ${w.wins.map(x=>`• ${x}<br>`).join('')}`:''}
+            ${w.wins.map(x=>`• ${escHtml(x)}<br>`).join('')}`:''}
           </div>
         </div>
       </div>`;
