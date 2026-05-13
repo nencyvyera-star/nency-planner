@@ -1,0 +1,4 @@
+# Local backups & archives — never deploy these
+_archive/
+*.bak
+*.bak-*

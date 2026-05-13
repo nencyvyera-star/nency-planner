@@ -1,4 +1,4 @@
-const CACHE='planner-v5';
+const CACHE='planner-v6';
 const URLS=['./index.html','./manifest.json','./logo.png','./icon-tasks.png','./icon-dump.png','./icon-me.png','./icon-prep.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));

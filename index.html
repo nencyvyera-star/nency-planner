@@ -495,6 +495,7 @@
   <div class="sc-right">
     <div class="br-bg"><div class="br-fl" id="bar"></div></div>
     <div class="stk" id="stk">Tap a task →</div>
+    <div class="stk" id="savedInd" style="font-size:9px;color:#16a34a;margin-top:2px;min-height:11px"></div>
   </div>
 </div>
 
@@ -618,7 +619,8 @@ review Auto-Fix rule changes"></textarea>
   <div id="winList"></div>
 
   <div class="win-export">
-    <button onclick="exportWins()">📋 Copy Wins for Connects</button>
+    <button onclick="exportWins()">� Copy Wins for Connects</button>
+    <button onclick="exportCompletionLog()" style="margin-left:6px">📊 Copy Completed Tasks</button>
   </div>
 </div>
 
@@ -791,7 +793,28 @@ const TASKS={
   ]}],
 };
 
-let aDay='mon';const SK='np-v6-20260511';
+let aDay='mon';
+// ═══════════════════════════════════════════════════════════
+// PERSISTENT STORAGE — v3 (ID-based, date-stable, Connect-ready)
+// Bug-fix May 13 2026: switched from position-based array under a
+// date-locked key (np-v6-20260511) to a stable, content-keyed model
+// so completions survive task reorders, code edits, and PWA cache misses.
+// ═══════════════════════════════════════════════════════════
+const SK='np-tasks-v3';
+const OLD_KEYS=['np-v6-20260511','np-v6-20260504','np-v6-20260427','np-v6','np-v5','np-v4','np-v3','np-v2','np-v1'];
+
+// Stable task ID from day + task name (slug)
+function tId(day,name){
+  const slug=String(name||'').toLowerCase()
+    .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,60);
+  return `${day}-${slug}`;
+}
+
+function getSt(){
+  try{const r=localStorage.getItem(SK);if(r){const p=JSON.parse(r);if(p&&typeof p==='object')return p}}catch(e){}
+  return {version:3,defaults:{},custom:{},log:[]};
+}
+function setSt(st){try{localStorage.setItem(SK,JSON.stringify(st));flashSaved()}catch(e){console.error('Save failed:',e)}}
 
 function buildTabs(){
   document.getElementById('tabs').innerHTML=DAYS.map(d=>
@@ -807,7 +830,7 @@ function buildPanels(){
       h+=`<div class="sec"><div class="sec-t">${s.cat}</div>`;
       s.tasks.forEach(t=>{
         const tg=t.tl?` <span class="tg ${t.tg}">${t.tl}</span>`:'';
-        h+=`<div class="tk" onclick="tog(this)" data-t="${t.t}" data-d="${d.k}"><div class="ck">✓</div><div class="tb"><div class="tn">${t.n}${tg}</div><div class="tw">${t.w}</div></div></div>`;
+        h+=`<div class="tk" onclick="tog(this)" data-id="${tId(d.k,t.n)}" data-t="${t.t}" data-d="${d.k}"><div class="ck">✓</div><div class="tb"><div class="tn">${t.n}${tg}</div><div class="tw">${t.w}</div></div></div>`;
       });
       h+=`</div>`;
     });
@@ -850,18 +873,47 @@ function co(f,t){
   const p=document.getElementById(`p-${f}`),un=[...p.querySelectorAll('.tk:not(.done)')];
   if(!un.length) return;
   const tgt=document.getElementById(`cr-${t}`);
+  const st=getSt();
+  if(!st.custom[t])st.custom[t]=[];
   un.forEach(tk=>{
-    const c=tk.cloneNode(true);const nm=c.querySelector('.tn');
-    if(!nm.innerHTML.includes('t-carry')) nm.innerHTML+=' <span class="tg t-carry">📦</span>';
-    c.classList.remove('done');c.dataset.d=t;c.setAttribute('onclick','tog(this)');
-    tgt.appendChild(c);tk.remove();
+    const isCustom=tk.dataset.custom==='1';
+    const sourceId=tk.dataset.id;
+    // Strip any existing tag spans from name to get clean text
+    const tnEl=tk.querySelector('.tn');
+    const cleanName=(()=>{const c=tnEl?.cloneNode(true);if(!c)return'';c.querySelectorAll('.tg').forEach(s=>s.remove());return c.textContent.replace(/\s+/g,' ').trim()})();
+    const wText=tk.querySelector('.tw')?.textContent||'';
+    // Hide source: default → mark hidden; custom → remove from source list
+    if(!isCustom&&sourceId){
+      st.defaults[sourceId]=st.defaults[sourceId]||{};
+      st.defaults[sourceId].hidden=true;
+      st.defaults[sourceId].carriedTo=t;
+    }else if(isCustom&&sourceId){
+      st.custom[f]=(st.custom[f]||[]).filter(c=>c.id!==sourceId);
+    }
+    // Add to target as carry-over custom entry
+    const newId=`${t}-carry-${Date.now()}-${Math.random().toString(36).slice(2,6)}`;
+    st.custom[t].push({
+      id:newId,text:cleanName,
+      w:wText||`Carried from ${f}`,
+      tg:'t-carry',tl:'📦',
+      done:false,completedAt:null,source:'carry-over',from:f
+    });
+    // Build DOM
+    const div=document.createElement('div');
+    div.className='tk';div.dataset.t='';div.dataset.d=t;
+    div.dataset.id=newId;div.dataset.custom='1';
+    div.setAttribute('onclick','tog(this)');
+    div.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${cleanName} <span class="tg t-carry">📦</span></div><div class="tw">Carried from ${f}</div></div>`;
+    tgt.appendChild(div);
+    tk.remove();
   });
   tgt.style.display='';
+  setSt(st);
   document.getElementById('cyT').textContent=`${un.length} task${un.length>1?'s':''} moved!`;
   document.getElementById('cyP').textContent=`→ ${DAYS.find(d=>d.k===t).l}`;
   const m=document.getElementById('cyM');m.classList.add('show');
   setTimeout(()=>m.classList.remove('show'),1800);
-  uAll();save();setTimeout(()=>sw(t),1000);
+  uAll();setTimeout(()=>sw(t),1000);
 }
 function uCy(){
   DAYS.forEach(d=>{const b=document.getElementById(`cy-${d.k}`);if(!b)return;
@@ -931,34 +983,185 @@ function sortBD(){
 function addBD(i){
   const s=document.getElementById(`bs-${i}`),d=s.value;if(!d){s.style.borderColor='#f87171';return}
   const r=document.getElementById(`br-${i}`),x=r.querySelector('.bd-x').textContent;
-  const cr=document.getElementById(`cr-${d}`),tk=document.createElement('div');
-  tk.className='tk';tk.dataset.t='';tk.dataset.d=d;tk.setAttribute('onclick','tog(this)');
+  const cr=document.getElementById(`cr-${d}`);
+  // Persist as custom (with stable ID) BEFORE building DOM
+  const newId=`${d}-bd-${Date.now()}-${Math.random().toString(36).slice(2,6)}`;
+  const st=getSt();
+  if(!st.custom[d])st.custom[d]=[];
+  st.custom[d].push({id:newId,text:x,w:'From brain dump',tg:'t-carry',tl:'🧠',done:false,completedAt:null,source:'brain-dump'});
+  setSt(st);
+  // Build DOM
+  const tk=document.createElement('div');
+  tk.className='tk';tk.dataset.t='';tk.dataset.d=d;
+  tk.dataset.id=newId;tk.dataset.custom='1';
+  tk.setAttribute('onclick','tog(this)');
   tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${x} <span class="tg t-carry">🧠</span></div><div class="tw">From brain dump</div></div>`;
   cr.appendChild(tk);cr.style.display='';r.style.opacity='.3';r.style.pointerEvents='none';
-  r.querySelector('.bda').textContent='✓';uAll();save();
+  r.querySelector('.bda').textContent='✓';uAll();
 }
 function clearBD(){document.getElementById('bdI').value='';document.getElementById('bdO').innerHTML=''}
 
 function save(){
-  const st={};DAYS.forEach(d=>{const pn=document.getElementById(`p-${d.k}`);st[d.k]=[];
-    pn.querySelectorAll('.tk').forEach(t=>st[d.k].push({done:t.classList.contains('done'),h:t.outerHTML}));
-  });localStorage.setItem(SK,JSON.stringify(st));
+  const st=getSt();
+  DAYS.forEach(d=>{
+    const pn=document.getElementById(`p-${d.k}`);if(!pn)return;
+    pn.querySelectorAll('.tk').forEach(tk=>{
+      const id=tk.dataset.id;if(!id)return;
+      const done=tk.classList.contains('done');
+      const isCustom=tk.dataset.custom==='1';
+      const nowIso=new Date().toISOString();
+      if(isCustom){
+        if(!st.custom[d.k])st.custom[d.k]=[];
+        const ex=st.custom[d.k].find(c=>c.id===id);
+        if(ex){
+          const wasDone=!!ex.done;
+          ex.done=done;
+          if(done&&!ex.completedAt)ex.completedAt=nowIso;
+          else if(!done)ex.completedAt=null;
+          if(done&&!wasDone)logCompletion(ex.text,d.k,nowIso);
+        }
+      }else{
+        const prev=st.defaults[id]||{};
+        const wasDone=!!prev.done;
+        st.defaults[id]={...prev,done:done};
+        if(done&&!prev.completedAt)st.defaults[id].completedAt=nowIso;
+        else if(!done)st.defaults[id].completedAt=null;
+        if(done&&!wasDone){
+          const nm=(tk.querySelector('.tn')?.cloneNode(true));
+          if(nm){nm.querySelectorAll('.tg').forEach(s=>s.remove());logCompletion(nm.textContent.trim(),d.k,nowIso)}
+        }
+      }
+    });
+  });
+  setSt(st);
 }
+
 function load(){
-  const r=localStorage.getItem(SK);if(!r)return;
-  try{const st=JSON.parse(r);DAYS.forEach(d=>{if(!st[d.k])return;
-    const pn=document.getElementById(`p-${d.k}`),tks=pn.querySelectorAll('.tk'),sv=st[d.k];
-    if(tks.length===sv.length){sv.forEach((s,i)=>{if(s.done&&tks[i])tks[i].classList.add('done')})}
-    else{let i=0;tks.forEach(t=>{if(i<sv.length&&sv[i]&&sv[i].done)t.classList.add('done');i++});
-      const cr=document.getElementById(`cr-${d.k}`);
-      for(let j=tks.length;j<sv.length;j++){if(sv[j]&&sv[j].h){
-        const div=document.createElement('div');div.innerHTML=sv[j].h;const tk=div.firstChild;
-        tk.setAttribute('onclick','tog(this)');if(sv[j].done)tk.classList.add('done');else tk.classList.remove('done');
-        cr.appendChild(tk);cr.style.display='';
-      }}
-    }
-  })}catch(e){}
+  migrateOldData();
+  const st=getSt();
+  DAYS.forEach(d=>{
+    const pn=document.getElementById(`p-${d.k}`);if(!pn)return;
+    // Apply state to default tasks by stable ID
+    pn.querySelectorAll('.tk').forEach(tk=>{
+      const id=tk.dataset.id;if(!id)return;
+      const sv=st.defaults[id];
+      if(sv){
+        if(sv.done)tk.classList.add('done');
+        if(sv.hidden)tk.style.display='none';
+      }
+    });
+    // Recreate brain-dump + carry-over entries
+    const cr=document.getElementById(`cr-${d.k}`);
+    const cust=st.custom[d.k]||[];
+    cust.forEach(c=>{
+      if(cr.querySelector(`[data-id="${c.id}"]`))return; // already there
+      const tk=document.createElement('div');
+      tk.className='tk'+(c.done?' done':'');
+      tk.dataset.t=c.t||'';tk.dataset.d=d.k;
+      tk.dataset.id=c.id;tk.dataset.custom='1';
+      tk.setAttribute('onclick','tog(this)');
+      const tag=c.tl?` <span class="tg ${c.tg||'t-carry'}">${c.tl}</span>`:'';
+      tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${c.text}${tag}</div><div class="tw">${c.w||''}</div></div>`;
+      cr.appendChild(tk);cr.style.display='';
+    });
+  });
 }
+
+// Append-only completion log (great for Connect mining)
+function logCompletion(text,day,iso){
+  const st=getSt();
+  if(!Array.isArray(st.log))st.log=[];
+  st.log.push({text,day,week:(typeof CURRENT_WEEK!=='undefined')?CURRENT_WEEK:'',completedAt:iso||new Date().toISOString()});
+  if(st.log.length>2000)st.log.splice(0,st.log.length-2000);
+  // Note: don't call setSt() here — caller already will
+  try{localStorage.setItem(SK,JSON.stringify(st))}catch(e){}
+}
+
+// "Saved" indicator (shows under score strip)
+let _lastSave=0,_saveTick=null;
+function flashSaved(){
+  _lastSave=Date.now();
+  const el=document.getElementById('savedInd');if(!el)return;
+  if(_saveTick)clearInterval(_saveTick);
+  const tick=()=>{
+    const s=Math.floor((Date.now()-_lastSave)/1000);
+    if(s<2)el.textContent='💾 Saved';
+    else if(s<60)el.textContent=`💾 Saved ${s}s ago`;
+    else if(s<3600)el.textContent=`💾 Saved ${Math.floor(s/60)}m ago`;
+    else el.textContent=`💾 Saved ${Math.floor(s/3600)}h ago`;
+  };
+  tick();
+  _saveTick=setInterval(tick,1000);
+}
+
+// One-time migration from old position-based keys → recovers your old completions!
+function migrateOldData(){
+  const st=getSt();
+  if(st._migrated)return;
+  let recovered=0;
+  for(const k of OLD_KEYS){
+    try{
+      const r=localStorage.getItem(k);if(!r)continue;
+      const old=JSON.parse(r);if(!old||typeof old!=='object')continue;
+      DAYS.forEach(d=>{
+        const arr=old[d.k];if(!Array.isArray(arr))return;
+        const defs=(TASKS[d.k]||[]).flatMap(s=>s.tasks);
+        arr.forEach((sv,idx)=>{
+          if(!sv||!sv.done)return;
+          let name=null;
+          if(sv.h){
+            const m=sv.h.match(/<div class="tn">([\s\S]*?)<\/div>/);
+            if(m){
+              const tmp=document.createElement('div');tmp.innerHTML=m[1];
+              tmp.querySelectorAll('.tg').forEach(s=>s.remove());
+              name=tmp.textContent.replace(/\s+/g,' ').trim();
+            }
+          }
+          if(!name&&defs[idx])name=defs[idx].n;
+          if(!name)return;
+          const match=defs.find(t=>t.n.toLowerCase().trim()===name.toLowerCase().trim());
+          if(match){
+            const id=tId(d.k,match.n);
+            if(!st.defaults[id]||!st.defaults[id].done){
+              st.defaults[id]={done:true,completedAt:new Date().toISOString(),migrated:true,fromKey:k};
+              recovered++;
+            }
+          }else{
+            // Brain-dump or carry-over → recreate as custom
+            if(!st.custom[d.k])st.custom[d.k]=[];
+            const exists=st.custom[d.k].find(c=>c.text===name);
+            if(!exists){
+              st.custom[d.k].push({
+                id:`${d.k}-rec-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,
+                text:name,w:'Recovered from previous version',
+                tg:'t-carry',tl:'♻️ RECOVERED',
+                done:!!sv.done,completedAt:sv.done?new Date().toISOString():null,
+                source:'migrated',fromKey:k
+              });
+              if(sv.done)recovered++;
+            }
+          }
+        });
+      });
+    }catch(e){console.warn('Migration error for',k,e)}
+  }
+  st._migrated=true;
+  if(recovered>0){
+    setSt(st);
+    console.log(`✅ Recovered ${recovered} task completion(s) from older planner versions`);
+    setTimeout(()=>{
+      const el=document.getElementById('savedInd');
+      if(el){
+        el.textContent=`♻️ Recovered ${recovered} completion(s)!`;
+        el.style.color='#16a34a';el.style.fontWeight='700';
+        setTimeout(()=>{el.style.color='';el.style.fontWeight='';flashSaved()},6000);
+      }
+    },800);
+  }else{
+    setSt(st); // persist the _migrated flag
+  }
+}
+
 
 buildTabs();buildPanels();load();sw('mon');uAll();
 
@@ -1025,10 +1228,18 @@ function quickAdd(i){
   const day=picked.dataset.dk;
   const text=row.querySelector('.qr-txt').textContent;
 
+  // Persist as custom with stable ID
+  const newId=`${day}-qd-${Date.now()}-${Math.random().toString(36).slice(2,6)}`;
+  const st=getSt();
+  if(!st.custom[day])st.custom[day]=[];
+  st.custom[day].push({id:newId,text:text,w:'From quick dump',tg:'t-carry',tl:'🧠',done:false,completedAt:null,source:'quick-dump'});
+  setSt(st);
+
   // Add task to the carried-over section of that day
   const cr=document.getElementById(`cr-${day}`);
   const tk=document.createElement('div');
   tk.className='tk';tk.dataset.t='';tk.dataset.d=day;
+  tk.dataset.id=newId;tk.dataset.custom='1';
   tk.setAttribute('onclick','tog(this)');
   tk.innerHTML=`<div class="ck">✓</div><div class="tb"><div class="tn">${text} <span class="tg t-carry">🧠</span></div><div class="tw">From quick dump</div></div>`;
   cr.appendChild(tk);cr.style.display='';
@@ -1036,7 +1247,7 @@ function quickAdd(i){
   // Mark as added
   row.classList.add('added');
   row.querySelector('.qr-add').textContent='✓ Added';
-  uAll();save();
+  uAll();
 
   // Mini celebration
   const fab=document.getElementById('fab');
@@ -1483,6 +1694,74 @@ function exportWins(){
     // Fallback
     const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
     alert('Wins copied to clipboard!');
+  });
+}
+
+// ═══ CONNECT-READY COMPLETED-TASKS EXPORT ═══
+// Pulls from the append-only completion log (every task you've ever
+// checked off) — perfect raw material for Connect self-review.
+function exportCompletionLog(){
+  const st=getSt();
+  const log=Array.isArray(st.log)?st.log.slice():[];
+  // Also fold in current week's defaults that are done (in case log was empty before today)
+  DAYS.forEach(d=>{
+    const defs=(TASKS[d.k]||[]).flatMap(s=>s.tasks);
+    defs.forEach(t=>{
+      const id=tId(d.k,t.n);
+      const sv=st.defaults[id];
+      if(sv&&sv.done){
+        // Avoid duplicates
+        const exists=log.some(l=>l.text&&l.text.toLowerCase().trim()===t.n.toLowerCase().trim()&&l.day===d.k);
+        if(!exists)log.push({text:t.n,day:d.k,week:(typeof CURRENT_WEEK!=='undefined')?CURRENT_WEEK:'',completedAt:sv.completedAt||new Date().toISOString()});
+      }
+    });
+    (st.custom[d.k]||[]).forEach(c=>{
+      if(c.done){
+        const exists=log.some(l=>l.text===c.text&&l.day===d.k);
+        if(!exists)log.push({text:c.text,day:d.k,week:(typeof CURRENT_WEEK!=='undefined')?CURRENT_WEEK:'',completedAt:c.completedAt||new Date().toISOString()});
+      }
+    });
+  });
+  if(!log.length){alert('No completed tasks logged yet — check off some tasks first!');return;}
+  // Sort newest first, group by ISO week-start (Mon)
+  log.sort((a,b)=>new Date(b.completedAt)-new Date(a.completedAt));
+  const dayName={mon:'Mon',tue:'Tue',wed:'Wed',thu:'Thu',fri:'Fri',sat:'Sat',sun:'Sun'};
+  const groups={};
+  log.forEach(l=>{
+    const dt=new Date(l.completedAt);
+    if(isNaN(dt))return;
+    // Week label = "Week of <Monday Mon DD, YYYY>"
+    const dow=dt.getDay(); // 0=Sun
+    const offsetToMon=(dow===0?-6:1-dow);
+    const mon=new Date(dt);mon.setDate(mon.getDate()+offsetToMon);mon.setHours(0,0,0,0);
+    const wkKey=mon.toISOString().slice(0,10);
+    const wkLabel=mon.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    if(!groups[wkKey])groups[wkKey]={label:`Week of ${wkLabel}`,items:[]};
+    groups[wkKey].items.push(l);
+  });
+  let txt='COMPLETED TASKS — Nency Yera\n'+'═'.repeat(45)+'\nGreat raw material for your Connect self-review.\n\n';
+  Object.keys(groups).sort().reverse().forEach(wk=>{
+    const g=groups[wk];
+    txt+=g.label.toUpperCase()+'\n'+'-'.repeat(g.label.length)+'\n';
+    // Sort within week oldest→newest so it reads chronologically
+    g.items.sort((a,b)=>new Date(a.completedAt)-new Date(b.completedAt));
+    g.items.forEach(l=>{
+      const dt=new Date(l.completedAt);
+      const time=dt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+      const dn=dayName[l.day]||l.day||'';
+      txt+=`  ✅ [${dn} ${time}] ${l.text}\n`;
+    });
+    txt+='\n';
+  });
+  navigator.clipboard.writeText(txt).then(()=>{
+    const cel=document.getElementById('cel');
+    document.getElementById('cE').textContent='📊';
+    document.getElementById('cT').textContent='COPIED!';
+    document.getElementById('cM').textContent=`${log.length} completed tasks → Connect ✨`;
+    cel.classList.add('show');setTimeout(()=>cel.classList.remove('show'),1800);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    alert(`${log.length} completed tasks copied!`);
   });
 }
 </script>
