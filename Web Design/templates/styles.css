@@ -1,0 +1,10 @@
+/* Custom styles — add anything Tailwind can't do here.
+   Tailwind utility classes handle most styling in the HTML. */
+
+:root {
+  --brand: #4f46e5; /* indigo-600 */
+}
+
+html {
+  scroll-behavior: smooth;
+}
